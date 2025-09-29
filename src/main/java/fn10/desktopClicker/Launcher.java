@@ -1,23 +1,18 @@
 package fn10.desktopClicker;
 
-import java.awt.Color;
+import com.formdev.flatlaf.FlatLightLaf;
 
-import javax.swing.JButton;
-import javax.swing.JFrame;
+import fn10.desktopClicker.ui.MainMenu;
 
 public class Launcher {
 
     public static void main(String[] args) {
-        JFrame jFrame = new JFrame("test");
-
-        jFrame.setUndecorated(true);
-
-        jFrame.setBackground(new Color(0,0,0,0));
-
-        jFrame.add(new JButton("yippe"));
-
-        jFrame.setVisible(true);
-
+        try {
+            FlatLightLaf.setup();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
+        new MainMenu().setVisible(true);
     }
 }
