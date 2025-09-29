@@ -9,14 +9,9 @@ repositories {
 }
 
 dependencies {
-    testImplementation(libs.junit.jupiter)
-
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-
     implementation(libs.guava)
 
     implementation("com.google.code.gson:gson:2.13.2")
-    implementation("com.formdev:flatlaf:3.6.1")
     implementation("commons-io:commons-io:2.19.0")
 }
 
