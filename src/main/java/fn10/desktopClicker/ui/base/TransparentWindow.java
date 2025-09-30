@@ -15,12 +15,12 @@ public class TransparentWindow extends JFrame {
         super();
 
         setUndecorated(true);
-        setBackground(new Color(0,0,0,0.1f));
-        
+        setBackground(new Color(0, 0, 0, 0f));
+
         setResizable(false);
         setSize(size);
-
-        setLocation(ImageUtilites.getScreenCenter(this));
+        if (goToCenter)
+            setLocation(ImageUtilites.getScreenCenter(this));
     }
 
 }

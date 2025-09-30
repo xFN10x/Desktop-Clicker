@@ -23,7 +23,7 @@ public class GameManager {
         @Override
         public void run() {
             if (NextCoinSpawn <= 0) {
-                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(500, 2000);
+                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(2000, 5000);
                 System.out.println("Coin!");
             CoinWindow.spawnNew();
             }

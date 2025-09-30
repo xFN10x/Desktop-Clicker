@@ -10,6 +10,7 @@ import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.ui.components.SavedGameSelection;
+import fn10.desktopClicker.util.ImageUtilites;
 import fn10.desktopClicker.util.SettingsManager;
 
 public class SavedGameSelector extends JFrame {
@@ -41,6 +42,8 @@ public class SavedGameSelector extends JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        setLocation(ImageUtilites.getScreenCenter(this));
 
         add(ScrollPane);
     }
