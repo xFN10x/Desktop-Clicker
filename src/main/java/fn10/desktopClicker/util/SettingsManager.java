@@ -26,6 +26,17 @@ public class SettingsManager {
 
     public List<SavedGame> games = new ArrayList<>();
 
+    public void removeGame(String Name) {
+        List<SavedGame> building = new ArrayList<>();
+
+        for (SavedGame games : games) {
+            if (!games.GameName.equals(Name)) {
+                building.add(games);
+            }
+        }
+        games = building;
+    }
+
     /**
      * Returns a SettingsManager instance from the saved file. Or a blank one if it
      * doesnt exist

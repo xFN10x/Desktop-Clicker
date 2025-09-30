@@ -1,5 +1,6 @@
 package fn10.desktopClicker.ui;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -25,16 +26,17 @@ public class SavedGameSelector extends JFrame {
         setLayout(Lay);
         setSize(400, 500);
 
-        Lay.putConstraint(SpringLayout.EAST, ScrollPane, 5, SpringLayout.EAST, getContentPane());
+        Lay.putConstraint(SpringLayout.EAST, ScrollPane, -5, SpringLayout.EAST, getContentPane());
         Lay.putConstraint(SpringLayout.WEST, ScrollPane, 5, SpringLayout.WEST, getContentPane());
         Lay.putConstraint(SpringLayout.NORTH, ScrollPane, 5, SpringLayout.NORTH, getContentPane());
-        Lay.putConstraint(SpringLayout.SOUTH, ScrollPane, 5, SpringLayout.SOUTH, getContentPane());
+        Lay.putConstraint(SpringLayout.SOUTH, ScrollPane, -5, SpringLayout.SOUTH, getContentPane());
 
         InnerScroll.setLayout(InnerLay);
 
         try {
             for (SavedGame game : SettingsManager.load().games) {
                 InnerScroll.add(new SavedGameSelection(game));
+                InnerScroll.add(Box.createVerticalStrut(5));
             }
         } catch (Exception e) {
             e.printStackTrace();
