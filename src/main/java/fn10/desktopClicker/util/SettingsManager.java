@@ -1,5 +1,6 @@
 package fn10.desktopClicker.util;
 
+import java.awt.Point;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,7 +20,11 @@ import fn10.desktopClicker.game.SavedGame;
 public class SettingsManager {
 
     private transient static final Gson gson = new GsonBuilder()
-            .registerTypeAdapter(Instant.class, new GsonTypeAdapters.InstantTypeAdapter()).setPrettyPrinting().create();
+            .registerTypeAdapter(Instant.class, new GsonTypeAdapters.InstantTypeAdapter())
+            .registerTypeAdapter(Point.class, new GsonTypeAdapters.PointTypeAdapter())
+            .setPrettyPrinting()
+            .create();
+
     public transient static final String MainFolderPath = Path.of(System.getProperty("user.home"), "/DesktopClicker/")
             .toString();
     public transient static final Path SettingsPath = Path.of(MainFolderPath, "save.json");
@@ -30,9 +35,10 @@ public class SettingsManager {
         List<SavedGame> building = new ArrayList<>();
 
         for (SavedGame games : games) {
-            if (!games.GameName.equals(Name)) {
-                building.add(games);
-            }
+            if (games.GameName != null)
+                if (!games.GameName.equals(Name)) {
+                    building.add(games);
+                }
         }
         games = building;
     }

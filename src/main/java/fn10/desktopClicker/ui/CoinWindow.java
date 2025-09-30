@@ -2,6 +2,7 @@ package fn10.desktopClicker.ui;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -22,42 +23,68 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
 
     public final JLabel image = new JLabel(new ImageIcon(getClass().getResource("/coin.gif")));
 
+    private final TimerTask onTick;
+
     public static void spawnNew() {
-        CoinWindow newWin = new CoinWindow();
-        newWin.setVisible(true);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Random random = Random.from(RandomGenerator.getDefault());
+
+        spawnNew(random.nextInt(0, Double.valueOf(screenSize.getWidth()).intValue()),
+                random.nextInt(0, Double.valueOf(screenSize.getHeight()).intValue()));
     }
 
-    private CoinWindow() {
+    public static void spawnNew(Point loc, long lifetime) {
+        spawnNew(Double.valueOf(loc.getX()).intValue(), Double.valueOf(loc.getY()).intValue(), lifetime);
+    }
+
+    public static void spawnNew(Point loc) {
+        spawnNew(Double.valueOf(loc.getX()).intValue(), Double.valueOf(loc.getY()).intValue());
+    }
+
+    public static void spawnNew(int x, int y) {
+        spawnNew(x, y, 15000);
+    }
+
+    public static void spawnNew(int x, int y, long lifetime) {
+
+        CoinWindow newWin = new CoinWindow(lifetime);
+        newWin.setVisible(true);
+        newWin.setLocation(x, y);
+    }
+
+    private CoinWindow(long lifetime) {
         super(new Dimension(100, 100), false);
+
+        onTick = new TimerTask() {
+
+            private long beforeDespawn = lifetime;
+            private long fadeCounter = 1000;
+
+            @Override
+            public void run() {
+                if (GameManager.Paused)
+                    return;
+                if (beforeDespawn <= 0) {
+                    GameManager.UpdateCoins(getLocation(), -1);
+                    setVisible(false);
+                    dispose();
+                    cancel();
+                    // fadeCounter--;
+                }
+                GameManager.UpdateCoins(getLocation(), beforeDespawn);
+                beforeDespawn--;
+            }
+
+        };
 
         image.addMouseListener(this);
         image.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         add(image);
 
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        Random random = Random.from(RandomGenerator.getDefault());
-        setLocation(random.nextInt(0, Double.valueOf(screenSize.getWidth()).intValue()),
-                random.nextInt(0, Double.valueOf(screenSize.getHeight()).intValue()));
-
         setAlwaysOnTop(true);
 
-        new Timer().scheduleAtFixedRate(new TimerTask() {
-
-            private long beforeDespawn = 30000;
-            private long fadeCounter = 1000;
-
-            @Override
-            public void run() {
-                if (beforeDespawn <= 0) {
-                    setVisible(false);
-                    dispose();
-                    // fadeCounter--;
-                }
-                beforeDespawn--;
-            }
-
-        }, 1, 1);
+        new Timer().scheduleAtFixedRate(onTick, 1, 1);
     }
 
     @Override
@@ -68,8 +95,10 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             try {
+                onTick.cancel();
                 setVisible(false);
                 GameManager.CurrentGame.Coins += 1;
+                GameManager.UpdateCoins(getLocation(), -1);
                 CoinAnimationWindow.showCoin();
                 Various.playSound(new File(getClass().getResource("/coin.wav").toURI()));
                 dispose();

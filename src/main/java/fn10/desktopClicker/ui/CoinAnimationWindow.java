@@ -11,22 +11,27 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
-import fn10.desktopClicker.util.Various;
 
 public class CoinAnimationWindow extends TransparentWindow {
 
-    public final JLabel image = new JLabel(new ImageIcon(getClass().getResource("/coin2.gif")));
+    public final JLabel image = new JLabel(new ImageIcon(CoinAnimationWindow.class.getResource("/coin2.gif")));
 
     public static void showCoin() {
         new CoinAnimationWindow().setVisible(true);
-        ;
+
     }
 
     private CoinAnimationWindow() {
         super(new Dimension(16, 64));
 
         add(image);
+
+        final Point basePos = MouseInfo.getPointerInfo().getLocation();
+        final int x = Double.valueOf(basePos.getX()).intValue();
+        final int y = Double.valueOf(basePos.getY()).intValue();
+        setLocation(x, y);
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
 
@@ -37,11 +42,13 @@ public class CoinAnimationWindow extends TransparentWindow {
             private JLabel score = new JLabel("+1");
             {
                 score.setForeground(Color.white);
-               // score.setFont(score.getFont().deriveFont(30f));
+                // score.setFont(score.getFont().deriveFont(30f));
             }
 
             @Override
             public void run() {
+                if (GameManager.Paused)
+                    return;
                 if (beforeDespawn <= 600 && beforeDespawn > 0) {
                     if (image.isVisible())
                         image.setVisible(false);
@@ -53,11 +60,8 @@ public class CoinAnimationWindow extends TransparentWindow {
                         setSize(100, 100);
                         doLayout();
                     }
-
-                    Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-                    int x = Double.valueOf(mouseLoc.getX() + offsetX).intValue();
-                    int y = Double.valueOf(mouseLoc.getY() + offsetY).intValue();
-                    setLocation(x, y);
+                    int y1 = Double.valueOf(y + offsetY).intValue();
+                    setLocation(x, y1);
 
                     beforeDespawn--;
                     return;
@@ -71,10 +75,10 @@ public class CoinAnimationWindow extends TransparentWindow {
                 } else {
                     offsetY++;
                 }
-                Point mouseLoc = MouseInfo.getPointerInfo().getLocation();
-                int x = Double.valueOf(mouseLoc.getX() + offsetX).intValue();
-                int y = Double.valueOf(mouseLoc.getY() + offsetY).intValue();
-                setLocation(x, y);
+
+                int y1 = Double.valueOf(y + offsetY).intValue();
+                setLocation(x, y1);
+                
                 beforeDespawn--;
                 goUp--;
             }

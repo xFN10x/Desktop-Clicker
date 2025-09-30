@@ -10,6 +10,7 @@ import java.util.Date;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.border.LineBorder;
 
 import fn10.desktopClicker.game.GameManager;
@@ -21,6 +22,7 @@ public class SavedGameSelection extends JPanel implements MouseListener {
 
     protected final JLabel name = new JLabel();
     protected final JLabel lastPlayed = new JLabel();
+    protected final JLabel coins = new JLabel();
 
     public final SpringLayout Lay = new SpringLayout();
 
@@ -38,6 +40,10 @@ public class SavedGameSelection extends JPanel implements MouseListener {
         Lay.putConstraint(SpringLayout.EAST, lastPlayed, -3, SpringLayout.EAST, this);
         Lay.putConstraint(SpringLayout.SOUTH, lastPlayed, -3, SpringLayout.SOUTH, this);
 
+        Lay.putConstraint(SpringLayout.WEST, coins, 3, SpringLayout.WEST, this);
+        Lay.putConstraint(SpringLayout.EAST, coins, -3, SpringLayout.EAST, this);
+        Lay.putConstraint(SpringLayout.SOUTH, coins, -3, SpringLayout.SOUTH, this);
+
         setBorder(new LineBorder(Color.gray, 1));
 
         name.setText(Target.GameName);
@@ -48,8 +54,12 @@ public class SavedGameSelection extends JPanel implements MouseListener {
             lastPlayed.setText("Never");
         }
 
+        coins.setHorizontalAlignment(SwingConstants.RIGHT);
+        coins.setText("Coins: " + Target.Coins);
+
         add(name);
         add(lastPlayed);
+        add(coins);
 
         addMouseListener(this);
     }

@@ -1,5 +1,6 @@
 package fn10.desktopClicker.util;
 
+import java.awt.Point;
 import java.lang.reflect.Type;
 import java.time.Instant;
 
@@ -24,6 +25,35 @@ public class GsonTypeAdapters {
         public JsonElement serialize(Instant src, Type typeOfSrc, JsonSerializationContext context) {
             typeOfSrc = long.class;
             return context.serialize(src.toEpochMilli());
+        }
+
+    }
+
+    public static class PointTypeAdapter implements JsonSerializer<Point>, JsonDeserializer<Point> {
+
+        @Override
+        public Point deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+                throws JsonParseException {
+            String string = json.getAsString();
+            if (string.startsWith("java.awt.Point[")) {
+                string = string.replace("java.awt.Point[x=", "").replace("]", "").replace("y=", "");
+                String[] split = string.split(",");
+                int x = Integer.valueOf(split[0]);
+                int y = Integer.valueOf(split[1]);
+                return new Point(x, y);
+            } else {
+                String[] split = string.split(",");
+                int x = Integer.valueOf(split[0]);
+                int y = Integer.valueOf(split[1]);
+                return new Point(x, y);
+            }
+        }
+
+        @Override
+        public JsonElement serialize(Point src, Type typeOfSrc, JsonSerializationContext context) {
+            typeOfSrc = String.class;
+            System.out.println(String.valueOf(src.getX()) + "," + String.valueOf(src.getY()));
+            return context.serialize(String.valueOf(src.getX()) + "," + String.valueOf(src.getY()), typeOfSrc);
         }
 
     }

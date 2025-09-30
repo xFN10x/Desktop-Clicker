@@ -1,10 +1,15 @@
 package fn10.desktopClicker.game;
 
+import java.awt.Point;
 import java.awt.Window;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.Map.Entry;
 import java.util.random.RandomGenerator;
 
 import fn10.desktopClicker.ui.CoinWindow;
@@ -17,6 +22,8 @@ public class GameManager {
     private static SavedGame LoadedGame;
     private static Thread RunningThread = null;
 
+    public static boolean Paused = false;
+
     private static long NextCoinSpawn = 0;
     private static TimerTask OnGameTick = new TimerTask() {
 
@@ -25,10 +32,10 @@ public class GameManager {
             if (NextCoinSpawn <= 0) {
                 NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(2000, 5000);
                 System.out.println("Coin!");
-            CoinWindow.spawnNew();
+                CoinWindow.spawnNew();
             }
             NextCoinSpawn--;
-            
+
         }
 
     };
@@ -38,6 +45,19 @@ public class GameManager {
             new Timer().scheduleAtFixedRate(OnGameTick, 1, 1);
         });
         RunningThread.start();
+    }
+
+    public static void UpdateCoins(Point location, long life) {
+        //System.out.println("Updating coin at: " + location.toString() + " Life: " + life);
+
+        if (CurrentGame.CurrentCoins == null)
+            CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
+
+        if (life >= 0)
+            CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
+        else if (life < 0) {
+            CurrentGame.CurrentCoins.remove(location);
+        }
     }
 
     public static void SaveCurrentGame() {
@@ -61,6 +81,7 @@ public class GameManager {
     }
 
     public static void LoadGame(SavedGame game) {
+        Paused = true;
         CurrentGame = game;
         LoadedGame = game;
 
@@ -69,7 +90,16 @@ public class GameManager {
         }
 
         new GameBar().setVisible(true);
+
+        if (CurrentGame.CurrentCoins != null)
+            for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {
+                Point key = entry.getKey();
+                System.out.println("Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
+                CoinWindow.spawnNew(key, entry.getValue());
+            }
+
         Run();
+        Paused = false;
     }
 
 }
