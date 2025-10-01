@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
+import fn10.desktopClicker.ui.notTransparent.UpgradeWindow;
 
 public class GameBar extends TransparentWindow {
 
@@ -43,6 +44,10 @@ public class GameBar extends TransparentWindow {
         });
 
         CoinsLabel.setForeground(Color.white);
+
+        UpgradeButton.addActionListener(ac -> {
+            UpgradeWindow.showUpgrades();
+        });
 
 
         CoinsLabel.setAlignmentX(0.5f);

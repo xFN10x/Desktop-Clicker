@@ -15,10 +15,13 @@ public interface IUpgrade {
     int getLevel(SavedGame game);
 
     /**
-     * This code should not only change the level varible, but it should also redo its calculations, and you can even use this in {@code Upgrade()} if you want
+     * This code should not only change the level varible, but it should also redo
+     * its calculations, and you can even use this in {@code Upgrade()} if you want
      */
     void setLevel(int level, SavedGame game);
 
     void Upgrade(SavedGame game);
+
+    int getCoinRequirment(SavedGame game);
 
 }

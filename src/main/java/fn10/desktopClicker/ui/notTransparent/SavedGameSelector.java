@@ -17,7 +17,7 @@ public class SavedGameSelector extends JFrame {
 
     public final JPanel InnerScroll = new JPanel();
     public final JScrollPane ScrollPane = new JScrollPane(InnerScroll, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
     public final SpringLayout Lay = new SpringLayout();
     public final BoxLayout InnerLay = new BoxLayout(InnerScroll, BoxLayout.Y_AXIS);

@@ -36,4 +36,9 @@ public class CoinsPerClickUpgrade implements IUpgrade {
         setLevel(game.CoinsPerClick + 1, game);
     }
 
+    @Override
+    public int getCoinRequirment(SavedGame game) {
+        return 15 + (20 * game.CoinsPerClick);
+    }
+
 }
