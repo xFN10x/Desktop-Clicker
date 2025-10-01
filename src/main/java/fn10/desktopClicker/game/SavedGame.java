@@ -12,12 +12,14 @@ public class SavedGame {
 
     public String GameName;
 
-    public int Coins;
-    public Map<Point, Integer> CurrentCoins = new HashMap<>();
+    public int Coins = 0;
+    public int CoinsPerClick = 1;
+
+    public Map<Point, Integer> CurrentCoins = new HashMap<Point, Integer>();
 
     public SavedGame(String Name, Instant made) {
         this.Creation = made;
         this.GameName = Name;
-
+        LastPlayed = Creation;
     }
 }

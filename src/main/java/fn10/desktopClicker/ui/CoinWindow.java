@@ -14,9 +14,11 @@ import java.util.random.RandomGenerator;
 
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
+import fn10.desktopClicker.util.ImageUtilites;
 import fn10.desktopClicker.util.Various;
 
 public class CoinWindow extends TransparentWindow implements MouseListener {
@@ -24,6 +26,8 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     public final JLabel image = new JLabel(new ImageIcon(getClass().getResource("/coin.gif")));
 
     private final TimerTask onTick;
+
+    private final SpringLayout lay = new SpringLayout();
 
     public static void spawnNew() {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -57,19 +61,24 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
 
         onTick = new TimerTask() {
 
-            private long beforeDespawn = lifetime;
-            private long fadeCounter = 1000;
+            public long beforeDespawn = lifetime;
+            private int fadeCounter = 1000;
 
             @Override
             public void run() {
                 if (GameManager.Paused)
                     return;
                 if (beforeDespawn <= 0) {
+                    int size = (fadeCounter/10);
+                    image.setSize(size, size);
+                    doLayout();
+                    fadeCounter--;
+                } if (fadeCounter <= 0) {
                     GameManager.UpdateCoins(getLocation(), -1);
                     setVisible(false);
                     dispose();
                     cancel();
-                    // fadeCounter--;
+                    return;
                 }
                 GameManager.UpdateCoins(getLocation(), beforeDespawn);
                 beforeDespawn--;
@@ -81,6 +90,9 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
         image.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
         add(image);
+
+        lay.putConstraint(SpringLayout.HORIZONTAL_CENTER, image, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
+        lay.putConstraint(SpringLayout.VERTICAL_CENTER, image, 0, SpringLayout.VERTICAL_CENTER, getContentPane());
 
         setAlwaysOnTop(true);
 
@@ -97,7 +109,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
             try {
                 onTick.cancel();
                 setVisible(false);
-                GameManager.CurrentGame.Coins += 1;
+                GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick;
                 GameManager.UpdateCoins(getLocation(), -1);
                 CoinAnimationWindow.showCoin();
                 Various.playSound(new File(getClass().getResource("/coin.wav").toURI()));

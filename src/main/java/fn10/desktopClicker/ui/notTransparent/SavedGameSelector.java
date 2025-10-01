@@ -1,4 +1,4 @@
-package fn10.desktopClicker.ui;
+package fn10.desktopClicker.ui.notTransparent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;

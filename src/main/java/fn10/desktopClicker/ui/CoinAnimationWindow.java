@@ -33,16 +33,17 @@ public class CoinAnimationWindow extends TransparentWindow {
         final int y = Double.valueOf(basePos.getY()).intValue();
         setLocation(x, y);
 
+        setAlwaysOnTop(true);
+
         new Timer().scheduleAtFixedRate(new TimerTask() {
 
             private long beforeDespawn = 900;
             private long goUp = 150;
             private int offsetY = -32;
             private int offsetX = -8;
-            private JLabel score = new JLabel("+1");
+            private JLabel score = new JLabel("+" + GameManager.CurrentGame.CoinsPerClick);
             {
                 score.setForeground(Color.white);
-                // score.setFont(score.getFont().deriveFont(30f));
             }
 
             @Override

@@ -46,6 +46,7 @@ public class GameBar extends TransparentWindow {
 
 
         CoinsLabel.setAlignmentX(0.5f);
+        UpgradeButton.setAlignmentX(0.5f);
         SaveButton.setAlignmentX(0.5f);
         SaveExitButton.setAlignmentX(0.5f);
         ExitButton.setAlignmentX(0.5f);

@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.ui.base.TransparentWindow;
+import fn10.desktopClicker.ui.notTransparent.SavedGameSelector;
 import fn10.desktopClicker.util.SettingsManager;
 
 public class MainMenu extends TransparentWindow {
