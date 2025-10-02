@@ -1,5 +1,6 @@
 package fn10.desktopClicker.ui.notTransparent;
 
+import java.awt.Color;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -15,6 +16,7 @@ import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
+import fn10.desktopClicker.util.ImageUtilites;
 import fn10.desktopClicker.util.Various;
 
 public class UpgradeWindow extends JDialog {
@@ -45,6 +47,8 @@ public class UpgradeWindow extends JDialog {
         setAlwaysOnTop(true);
         setLayout(Lay);
 
+        setLocation(ImageUtilites.getScreenCenter(this));
+
         Lay.putConstraint(SpringLayout.EAST, ScrollPane, -5, SpringLayout.EAST, getContentPane());
         Lay.putConstraint(SpringLayout.WEST, ScrollPane, 5, SpringLayout.WEST, getContentPane());
         Lay.putConstraint(SpringLayout.NORTH, ScrollPane, 5, SpringLayout.NORTH, getContentPane());
@@ -55,6 +59,8 @@ public class UpgradeWindow extends JDialog {
         for (IUpgrade iUpgrade : upgrades) {
             try {
                 SpringLayout layout = new SpringLayout();
+                JLabel text = new JLabel("<html> <b>"+ iUpgrade.getUpgradeName() +"</b> <br><br> " + iUpgrade.getUpgradeDescription() + " <br><br><br><br></html>");
+                text.setForeground(Color.white);
                 JLabel upgradePanel = new JLabel(iUpgrade.getUpgradeImage());
                 JButton upgradeButton = new JButton(
                         "Upgrade ( " + iUpgrade.getCoinRequirment(GameManager.CurrentGame) + " coins)");
@@ -81,7 +87,13 @@ public class UpgradeWindow extends JDialog {
                 layout.putConstraint(SpringLayout.WEST, upgradeButton, 5, SpringLayout.WEST, upgradePanel);
                 layout.putConstraint(SpringLayout.SOUTH, upgradeButton, -5, SpringLayout.SOUTH, upgradePanel);
 
+                layout.putConstraint(SpringLayout.EAST, text, -5, SpringLayout.EAST, upgradePanel);
+                layout.putConstraint(SpringLayout.WEST, text, 5, SpringLayout.WEST, upgradePanel);
+                layout.putConstraint(SpringLayout.SOUTH, text, -5, SpringLayout.NORTH, upgradeButton);
+                //layout.putConstraint(SpringLayout.NORTH, text, 50, SpringLayout.NORTH, upgradeButton);
+
                 upgradePanel.add(upgradeButton);
+                upgradePanel.add(text);
 
                 InnerScroll.add(upgradePanel);
             } catch (Exception e) {

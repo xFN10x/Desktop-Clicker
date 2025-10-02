@@ -44,6 +44,7 @@ public class CoinAnimationWindow extends TransparentWindow {
             private JLabel score = new JLabel("+" + GameManager.CurrentGame.CoinsPerClick);
             {
                 score.setForeground(Color.white);
+                score.setMinimumSize(new Dimension(100, 100));
             }
 
             @Override
@@ -57,7 +58,7 @@ public class CoinAnimationWindow extends TransparentWindow {
                         add(score);
                     if (offsetY != -64)
                         offsetY = -64;
-                    if (getSize().equals(new Dimension(100, 100))) {
+                    if (!getSize().equals(new Dimension(100, 100))) {
                         setSize(100, 100);
                         doLayout();
                     }

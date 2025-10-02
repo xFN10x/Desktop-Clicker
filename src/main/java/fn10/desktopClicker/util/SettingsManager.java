@@ -29,10 +29,10 @@ public class SettingsManager {
             .toString();
     public transient static final Path SettingsPath = Path.of(MainFolderPath, "save.json");
 
-    public List<SavedGame> games = new ArrayList<>();
+    public List<SavedGame> games = new ArrayList<SavedGame>();
 
     public void removeGame(String Name) {
-        List<SavedGame> building = new ArrayList<>();
+        List<SavedGame> building = new ArrayList<SavedGame>();
 
         for (SavedGame games : games) {
             if (games.GameName != null)
@@ -53,6 +53,10 @@ public class SettingsManager {
      */
     public static SettingsManager load() throws JsonSyntaxException, IOException {
         if (SettingsPath.toFile().exists()) {
+            if (Files.readString(SettingsPath).isEmpty()) {
+                SettingsPath.toFile().delete();
+                return new SettingsManager();
+            }
             return gson.fromJson(Files.readString(SettingsPath), SettingsManager.class);
         } else {
             return new SettingsManager();

@@ -48,15 +48,18 @@ public class GameManager {
     }
 
     public static void UpdateCoins(Point location, long life) {
-        //System.out.println("Updating coin at: " + location.toString() + " Life: " + life);
-
-        if (CurrentGame.CurrentCoins == null)
+        if (CurrentGame.CurrentCoins == null) {
+            System.out.println("Was null");
             CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
+        }
 
         if (life >= 0)
             CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
         else if (life < 0) {
-            CurrentGame.CurrentCoins.remove(location);
+            {
+                System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
+                
+            }
         }
     }
 
@@ -94,7 +97,8 @@ public class GameManager {
         if (CurrentGame.CurrentCoins != null)
             for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {
                 Point key = entry.getKey();
-                System.out.println("Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
+                System.out.println(
+                        "Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
                 CoinWindow.spawnNew(key, entry.getValue());
             }
 

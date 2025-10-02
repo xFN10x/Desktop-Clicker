@@ -17,7 +17,7 @@ public class TransparentWindow extends JWindow {
         super();
 
         //setUndecorated(true);
-        setBackground(new Color(0, 0, 0, 0f));
+        setBackground(new Color(0, 0, 0, 0.1f));
 
         //setResizable(false);
         setSize(size);

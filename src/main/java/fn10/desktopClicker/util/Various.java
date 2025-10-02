@@ -18,17 +18,28 @@ import org.jspecify.annotations.NonNull;
  */
 public class Various {
 
-    public static void playSound(File audioFile) {
-        //do this on another thread so it doesnt slow down
-        new Thread(() -> {
-            try {
-            AudioInputStream ais = AudioSystem.getAudioInputStream(audioFile);
-            Clip clip = AudioSystem.getClip();
-            clip.open(ais);
-            clip.start();
+    static {
+        try {
+            // this preloads all sounds
+            AudioSystem.getAudioInputStream(new File(Various.class.getResource("/upgrade.wav").toURI()));
+            AudioSystem.getAudioInputStream(new File(Various.class.getResource("/coin.wav").toURI()));
+            AudioSystem.getAudioInputStream(new File(Various.class.getResource("/cannotBuy.wav").toURI()));
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public static void playSound(File audioFile) {
+        // do this on another thread so it doesnt slow down
+        new Thread(() -> {
+            try {
+                AudioInputStream ais = AudioSystem.getAudioInputStream(audioFile);
+                Clip clip = AudioSystem.getClip();
+                clip.open(ais);
+                clip.start();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }).start();
     }
 
@@ -51,7 +62,7 @@ public class Various {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+
         return font;
     }
 

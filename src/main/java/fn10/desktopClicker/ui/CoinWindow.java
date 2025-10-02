@@ -1,8 +1,12 @@
 package fn10.desktopClicker.ui;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.awt.Point;
+import java.awt.Rectangle;
 import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -30,11 +34,18 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     private final SpringLayout lay = new SpringLayout();
 
     public static void spawnNew() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        Rectangle bounds = ImageUtilites.getScreenWorkingArea(null);
         Random random = Random.from(RandomGenerator.getDefault());
 
-        spawnNew(random.nextInt(0, Double.valueOf(screenSize.getWidth()).intValue()),
-                random.nextInt(0, Double.valueOf(screenSize.getHeight()).intValue()));
+        spawnNew(
+                random.nextInt(0,
+                        Double.valueOf(
+                                bounds.getWidth())
+                                .intValue() - 100), //subtract 100 cause it goes by top left corner
+                random.nextInt(0,
+                        Double.valueOf(
+                                bounds.getHeight())
+                                .intValue() - 100));
     }
 
     public static void spawnNew(Point loc, long lifetime) {
@@ -69,11 +80,12 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                 if (GameManager.Paused)
                     return;
                 if (beforeDespawn <= 0) {
-                    int size = (fadeCounter/10);
+                    int size = (fadeCounter / 10);
                     image.setSize(size, size);
                     doLayout();
                     fadeCounter--;
-                } if (fadeCounter <= 0) {
+                }
+                if (fadeCounter <= 0) {
                     GameManager.UpdateCoins(getLocation(), -1);
                     setVisible(false);
                     dispose();
@@ -117,6 +129,12 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
+        } else if (e.getButton() == MouseEvent.BUTTON2) {
+            JLabel labal = new JLabel(getLocation().toString());
+            labal.setForeground(Color.white);
+            add(labal);
+
+            labal.setLocation(0, 0);
         }
     }
 
