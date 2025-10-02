@@ -15,6 +15,7 @@ import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
+import fn10.desktopClicker.game.upgrades.CoinMiningUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
@@ -24,8 +25,8 @@ import fn10.desktopClicker.util.Various;
 public class UpgradeWindow extends JDialog {
 
     private final JPanel InnerScroll = new JPanel();
-    private final JScrollPane ScrollPane = new JScrollPane(InnerScroll, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED,
-            JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+    private final JScrollPane ScrollPane = new JScrollPane(InnerScroll, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+            JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
     private final SpringLayout Lay = new SpringLayout();
     private final BoxLayout InnerLay = new BoxLayout(InnerScroll, BoxLayout.X_AXIS);
@@ -33,6 +34,7 @@ public class UpgradeWindow extends JDialog {
     private final IUpgrade[] upgrades = new IUpgrade[] {
             new CoinsPerClickUpgrade(),
             new CoinSpeedUpgrade(),
+            new CoinMiningUpgrade(),
     };
 
     public static void showUpgrades() {
@@ -49,6 +51,9 @@ public class UpgradeWindow extends JDialog {
 
         setAlwaysOnTop(true);
         setLayout(Lay);
+
+        ScrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        ScrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
         setLocation(ImageUtilites.getScreenCenter(this));
 
@@ -100,8 +105,6 @@ public class UpgradeWindow extends JDialog {
                 layout.putConstraint(SpringLayout.EAST, text, -5, SpringLayout.EAST, upgradePanel);
                 layout.putConstraint(SpringLayout.WEST, text, 5, SpringLayout.WEST, upgradePanel);
                 layout.putConstraint(SpringLayout.SOUTH, text, -5, SpringLayout.NORTH, upgradeButton);
-                // layout.putConstraint(SpringLayout.NORTH, text, 50, SpringLayout.NORTH,
-                // upgradeButton);
 
                 upgradePanel.add(upgradeButton);
                 upgradePanel.add(text);

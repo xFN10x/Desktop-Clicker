@@ -40,6 +40,9 @@ public class SavedGameSelector extends JFrame {
 
         });
 
+        ScrollPane.getHorizontalScrollBar().setUnitIncrement(16);
+        ScrollPane.getVerticalScrollBar().setUnitIncrement(16);
+
         Lay.putConstraint(SpringLayout.EAST, ScrollPane, -5, SpringLayout.EAST, getContentPane());
         Lay.putConstraint(SpringLayout.WEST, ScrollPane, 5, SpringLayout.WEST, getContentPane());
         Lay.putConstraint(SpringLayout.NORTH, ScrollPane, 5, SpringLayout.NORTH, getContentPane());

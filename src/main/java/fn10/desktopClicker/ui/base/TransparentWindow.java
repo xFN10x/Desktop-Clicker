@@ -2,7 +2,6 @@ package fn10.desktopClicker.ui.base;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import javax.swing.JFrame;
 import javax.swing.JWindow;
 
 import fn10.desktopClicker.util.ImageUtilites;

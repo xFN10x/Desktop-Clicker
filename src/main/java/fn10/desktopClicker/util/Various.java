@@ -6,6 +6,9 @@ import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.util.Random;
+import java.util.random.RandomGenerator;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
@@ -25,6 +28,17 @@ public class Various {
             AudioSystem.getAudioInputStream(new File(Various.class.getResource("/coin.wav").toURI()));
             AudioSystem.getAudioInputStream(new File(Various.class.getResource("/cannotBuy.wav").toURI()));
         } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void playRandomMiningSound() {
+        try {
+            playSound(new File(Various.class
+                    .getResource(
+                            "/miningSounds/mine" + Random.from(RandomGenerator.getDefault()).nextInt(3) + 1 + ".wav")
+                    .toURI()));
+        } catch (URISyntaxException e) {
             e.printStackTrace();
         }
     }

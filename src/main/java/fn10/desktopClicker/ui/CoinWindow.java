@@ -42,7 +42,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                 random.nextInt(0,
                         Double.valueOf(
                                 bounds.getHeight())
-                                .intValue() - 100));
+                                .intValue() - 100)); //subtract 100 cause it goes by top left corner
     }
 
     public static void spawnNew(Point loc, long lifetime) {

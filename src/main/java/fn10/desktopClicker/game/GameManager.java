@@ -3,9 +3,7 @@ package fn10.desktopClicker.game;
 import java.awt.Point;
 import java.awt.Window;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -15,6 +13,7 @@ import java.util.random.RandomGenerator;
 import fn10.desktopClicker.ui.CoinWindow;
 import fn10.desktopClicker.ui.GameBar;
 import fn10.desktopClicker.util.SettingsManager;
+import fn10.desktopClicker.util.Various;
 
 public class GameManager {
 
@@ -25,12 +24,24 @@ public class GameManager {
     public static boolean Paused = false;
 
     private static long NextCoinSpawn = 0;
+    private static long MiningTimer = 0;
     private static TimerTask OnGameTick = new TimerTask() {
 
         @Override
         public void run() {
+            if (CurrentGame.CoinMiningLevel >= 0) {
+                if (MiningTimer <= 0) {
+                    MiningTimer = CurrentGame.CoinMiningInterval;
+                    Various.playR
+                } else {
+                    MiningTimer--;
+                }
+
+            }
+
             if (NextCoinSpawn <= 0) {
-                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(Math.max(CurrentGame.CoinMaxTime - 2000, 200),
+                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(
+                        Math.max(CurrentGame.CoinMaxTime - 2000, 200),
                         Math.max(CurrentGame.CoinMaxTime, 500));
                 System.out.println("Coin!");
                 CoinWindow.spawnNew();
