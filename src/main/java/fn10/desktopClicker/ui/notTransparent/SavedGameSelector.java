@@ -1,5 +1,9 @@
 package fn10.desktopClicker.ui.notTransparent;
 
+import java.awt.Window;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JFrame;
@@ -22,10 +26,19 @@ public class SavedGameSelector extends JFrame {
     public final SpringLayout Lay = new SpringLayout();
     public final BoxLayout InnerLay = new BoxLayout(InnerScroll, BoxLayout.Y_AXIS);
 
-    public SavedGameSelector() {
+    public SavedGameSelector(Window openAfter) {
         super("Select Game...");
         setLayout(Lay);
         setSize(400, 500);
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                openAfter.setVisible(true);
+            }
+
+        });
 
         Lay.putConstraint(SpringLayout.EAST, ScrollPane, -5, SpringLayout.EAST, getContentPane());
         Lay.putConstraint(SpringLayout.WEST, ScrollPane, 5, SpringLayout.WEST, getContentPane());

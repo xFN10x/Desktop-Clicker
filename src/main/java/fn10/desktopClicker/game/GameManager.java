@@ -30,7 +30,8 @@ public class GameManager {
         @Override
         public void run() {
             if (NextCoinSpawn <= 0) {
-                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(2000, 5000);
+                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(Math.max(CurrentGame.CoinMaxTime - 2000, 200),
+                        Math.max(CurrentGame.CoinMaxTime, 500));
                 System.out.println("Coin!");
                 CoinWindow.spawnNew();
             }
@@ -58,7 +59,7 @@ public class GameManager {
         else if (life < 0) {
             {
                 System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
-                
+
             }
         }
     }

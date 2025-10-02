@@ -25,7 +25,7 @@ public class GameBar extends TransparentWindow {
     public final BoxLayout Lay = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
 
     public GameBar() {
-        super(new Dimension(100, 150),false);
+        super(new Dimension(90, 150),false);
 
         setLayout(Lay);
 

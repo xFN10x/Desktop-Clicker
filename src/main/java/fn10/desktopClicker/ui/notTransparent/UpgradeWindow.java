@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.io.File;
 import java.net.URISyntaxException;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -14,6 +15,7 @@ import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
+import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
 import fn10.desktopClicker.util.ImageUtilites;
@@ -30,6 +32,7 @@ public class UpgradeWindow extends JDialog {
 
     private final IUpgrade[] upgrades = new IUpgrade[] {
             new CoinsPerClickUpgrade(),
+            new CoinSpeedUpgrade(),
     };
 
     public static void showUpgrades() {
@@ -59,11 +62,13 @@ public class UpgradeWindow extends JDialog {
         for (IUpgrade iUpgrade : upgrades) {
             try {
                 SpringLayout layout = new SpringLayout();
-                JLabel text = new JLabel("<html> <b>"+ iUpgrade.getUpgradeName() +"</b> <br><br> " + iUpgrade.getUpgradeDescription() + " <br><br><br><br></html>");
+                JLabel text = new JLabel(
+                        "<html> <b>" + iUpgrade.getUpgradeName() + "</b> <br><br> " + iUpgrade.getUpgradeDescription()
+                                + " <br><br><br><br>Level: " + iUpgrade.getLevel(GameManager.CurrentGame) + "</html>");
                 text.setForeground(Color.white);
                 JLabel upgradePanel = new JLabel(iUpgrade.getUpgradeImage());
                 JButton upgradeButton = new JButton(
-                        "Upgrade ( " + iUpgrade.getCoinRequirment(GameManager.CurrentGame) + " coins)");
+                        "Upgrade (" + iUpgrade.getCoinRequirment(GameManager.CurrentGame) + " coins)");
                 upgradeButton.addActionListener(ac -> {
                     try {
                         SavedGame game = GameManager.CurrentGame;
@@ -72,7 +77,12 @@ public class UpgradeWindow extends JDialog {
                             Various.playSound(new File(getClass().getResource("/upgrade.wav").toURI()));
                             iUpgrade.Upgrade(GameManager.CurrentGame);
                             upgradeButton
-                                    .setText("Upgrade ( " + iUpgrade.getCoinRequirment(game) + " coins)");
+                                    .setText("Upgrade (" + iUpgrade.getCoinRequirment(game) + " coins)");
+                            text.setText(
+                                    "<html> <b>" + iUpgrade.getUpgradeName() + "</b> <br><br> "
+                                            + iUpgrade.getUpgradeDescription()
+                                            + " <br><br><br><br>Level: " + iUpgrade.getLevel(game)
+                                            + "</html>");
                         } else {
                             Various.playSound(new File(getClass().getResource("/cannotBuy.wav").toURI()));
                         }
@@ -90,12 +100,14 @@ public class UpgradeWindow extends JDialog {
                 layout.putConstraint(SpringLayout.EAST, text, -5, SpringLayout.EAST, upgradePanel);
                 layout.putConstraint(SpringLayout.WEST, text, 5, SpringLayout.WEST, upgradePanel);
                 layout.putConstraint(SpringLayout.SOUTH, text, -5, SpringLayout.NORTH, upgradeButton);
-                //layout.putConstraint(SpringLayout.NORTH, text, 50, SpringLayout.NORTH, upgradeButton);
+                // layout.putConstraint(SpringLayout.NORTH, text, 50, SpringLayout.NORTH,
+                // upgradeButton);
 
                 upgradePanel.add(upgradeButton);
                 upgradePanel.add(text);
 
                 InnerScroll.add(upgradePanel);
+                InnerScroll.add(Box.createHorizontalStrut(10));
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -30,9 +30,18 @@ public class MainMenu extends TransparentWindow {
 
         NewGameButton.addActionListener(ac -> {
             try {
+                setAlwaysOnTop(false);
                 String option = JOptionPane.showInputDialog(this,
                         "Lets start clicking some coins! What do you want to name this game?", "New Game",
                         JOptionPane.QUESTION_MESSAGE);
+                        
+                if (option == null) {
+                    setAlwaysOnTop(true);
+                    return;
+                } else if (option.isBlank()) {
+                    setAlwaysOnTop(true);
+                    return;
+                }
 
                 SavedGame newGame = new SavedGame(option, Instant.now());
 
@@ -48,7 +57,7 @@ public class MainMenu extends TransparentWindow {
 
         LoadGameButton.addActionListener(ac -> {
             setVisible(false);
-            new SavedGameSelector().setVisible(true);
+            new SavedGameSelector(this).setVisible(true);
         });
 
         setAlwaysOnTop(true);

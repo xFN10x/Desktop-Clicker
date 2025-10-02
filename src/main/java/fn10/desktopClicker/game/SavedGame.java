@@ -14,6 +14,11 @@ public class SavedGame {
 
     public int Coins = 0;
     public int CoinsPerClick = 1;
+    public int CoinMaxTime = 5000;
+    /**
+     * im to lazy to figure out the reverse conversion for it, so just store it here
+     */
+    public int CoinSpeedLevel = 1;
 
     public Map<Point, Integer> CurrentCoins = new HashMap<Point, Integer>();
 

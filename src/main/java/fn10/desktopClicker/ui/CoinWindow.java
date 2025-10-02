@@ -3,11 +3,8 @@ package fn10.desktopClicker.ui;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.awt.Toolkit;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
@@ -57,7 +54,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     }
 
     public static void spawnNew(int x, int y) {
-        spawnNew(x, y, 15000);
+        spawnNew(x, y, 5000);
     }
 
     public static void spawnNew(int x, int y, long lifetime) {
@@ -80,13 +77,15 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                 if (GameManager.Paused)
                     return;
                 if (beforeDespawn <= 0) {
+                    if (fadeCounter == 1000)
+                    GameManager.UpdateCoins(getLocation(), -1);
                     int size = (fadeCounter / 10);
                     image.setSize(size, size);
                     doLayout();
                     fadeCounter--;
+                    return;
                 }
                 if (fadeCounter <= 0) {
-                    GameManager.UpdateCoins(getLocation(), -1);
                     setVisible(false);
                     dispose();
                     cancel();
@@ -112,8 +111,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-    }
+    public void mouseClicked(MouseEvent e) {}
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -139,15 +137,11 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mouseEntered(MouseEvent e) {
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-    }
+    public void mouseExited(MouseEvent e) {}
 }
