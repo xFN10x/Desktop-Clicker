@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.File;
+import java.net.URISyntaxException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -38,11 +39,11 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                 random.nextInt(0,
                         Double.valueOf(
                                 bounds.getWidth())
-                                .intValue() - 100), //subtract 100 cause it goes by top left corner
+                                .intValue() - 100), // subtract 100 cause it goes by top left corner
                 random.nextInt(0,
                         Double.valueOf(
                                 bounds.getHeight())
-                                .intValue() - 100)); //subtract 100 cause it goes by top left corner
+                                .intValue() - 100)); // subtract 100 cause it goes by top left corner
     }
 
     public static void spawnNew(Point loc, long lifetime) {
@@ -78,7 +79,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                     return;
                 if (beforeDespawn <= 0) {
                     if (fadeCounter == 1000)
-                    GameManager.UpdateCoins(getLocation(), -1);
+                        GameManager.UpdateCoins(getLocation(), -1);
                     int size = (fadeCounter / 10);
                     image.setSize(size, size);
                     doLayout();
@@ -111,19 +112,19 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     }
 
     @Override
-    public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {
+    }
 
     @Override
     public void mousePressed(MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
             try {
                 onTick.cancel();
-                setVisible(false);
+                dispose();
                 GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick;
                 GameManager.UpdateCoins(getLocation(), -1);
                 CoinAnimationWindow.showCoin();
                 Various.playSound(new File(getClass().getResource("/coin.wav").toURI()));
-                dispose();
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
@@ -137,11 +138,14 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     }
 
     @Override
-    public void mouseReleased(MouseEvent e) {}
+    public void mouseReleased(MouseEvent e) {
+    }
 
     @Override
-    public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {
+    }
 
     @Override
-    public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {
+    }
 }

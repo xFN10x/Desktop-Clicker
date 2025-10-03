@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 import java.util.random.RandomGenerator;
 
@@ -21,12 +23,13 @@ import org.jspecify.annotations.NonNull;
  */
 public class Various {
 
+    private static final Map<String, Clip> CachedAudio = new HashMap<String, Clip>();
+
     static {
         try {
-            // this preloads all sounds
-            AudioSystem.getAudioInputStream(new File(Various.class.getResource("/upgrade.wav").toURI()));
-            AudioSystem.getAudioInputStream(new File(Various.class.getResource("/coin.wav").toURI()));
-            AudioSystem.getAudioInputStream(new File(Various.class.getResource("/cannotBuy.wav").toURI()));
+            preloadAudio(new File(Various.class.getResource("/cannotBuy.wav").toURI()));
+            preloadAudio(new File(Various.class.getResource("/coin.wav").toURI()));
+            preloadAudio(new File(Various.class.getResource("/upgrade.wav").toURI()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -36,10 +39,22 @@ public class Various {
         try {
             playSound(new File(Various.class
                     .getResource(
-                            "/miningSounds/mine" + Random.from(RandomGenerator.getDefault()).nextInt(3) + 1 + ".wav")
+                            "/miningSounds/mine" + (Random.from(RandomGenerator.getDefault()).nextInt(3) + 1) + ".wav")
                     .toURI()));
         } catch (URISyntaxException e) {
             e.printStackTrace();
+        }
+    }
+
+    private static Clip preloadAudio(File file) {
+        try {
+            AudioInputStream ais = AudioSystem.getAudioInputStream(file);
+            Clip clip = AudioSystem.getClip();
+            clip.open(ais);
+            return CachedAudio.put(file.getPath(), clip);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
     }
 
@@ -47,9 +62,17 @@ public class Various {
         // do this on another thread so it doesnt slow down
         new Thread(() -> {
             try {
-                AudioInputStream ais = AudioSystem.getAudioInputStream(audioFile);
-                Clip clip = AudioSystem.getClip();
-                clip.open(ais);
+                Clip clip;
+                if (CachedAudio.containsKey(audioFile.getPath())) {
+                    clip = CachedAudio.get(audioFile.getPath());
+                } else {
+                    clip = preloadAudio(audioFile);
+                }
+                
+                if (clip.isRunning()) {
+                    clip.stop();
+                }
+                clip.setFramePosition(0);
                 clip.start();
             } catch (Exception e) {
                 e.printStackTrace();

@@ -29,15 +29,16 @@ public class GameManager {
 
         @Override
         public void run() {
-            if (CurrentGame.CoinMiningLevel >= 0) {
+            if (CurrentGame.CoinMiningLevel >= 0 && CurrentGame.CoinMiningInterval >= 0) {
                 if (MiningTimer <= 0) {
                     MiningTimer = CurrentGame.CoinMiningInterval;
-                    Various.playR
+                    Various.playRandomMiningSound();
+                    CurrentGame.Coins += CurrentGame.CoinsPerClick;
                 } else {
                     MiningTimer--;
                 }
-
             }
+            System.out.println(MiningTimer);
 
             if (NextCoinSpawn <= 0) {
                 NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(

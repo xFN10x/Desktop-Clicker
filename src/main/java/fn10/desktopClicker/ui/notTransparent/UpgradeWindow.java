@@ -44,7 +44,7 @@ public class UpgradeWindow extends JDialog {
     private UpgradeWindow() {
         super(null, "Upgrades", ModalityType.APPLICATION_MODAL);
 
-        setSize(900, 700);
+        setSize(1200, 800);
         setResizable(false);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);

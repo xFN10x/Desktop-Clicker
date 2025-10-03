@@ -28,10 +28,11 @@ public class CoinMiningUpgrade implements IUpgrade {
 
     @Override
     public void setLevel(int level, SavedGame game) {
-        if (level == 1) {
+        if (level <= 1) {
             game.CoinMiningInterval = -1;
         } else
-            game.CoinMiningInterval = 5000 - ((200 * (game.CoinMiningInterval / 5000)) * (level - 1));
+            game.CoinMiningInterval = 6000 - (150 * (level - 1));
+
         game.CoinMiningLevel = level;
     }
 
@@ -42,7 +43,7 @@ public class CoinMiningUpgrade implements IUpgrade {
 
     @Override
     public int getCoinRequirment(SavedGame game) {
-        return 100 + (50 * game.CoinMiningLevel);
+        return 50 + (50 * game.CoinMiningLevel);
     }
 
 }

@@ -15,12 +15,15 @@ import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 
 public class CoinAnimationWindow extends TransparentWindow {
+    public static final ImageIcon COIN_ICON;
+    static {
+        COIN_ICON = new ImageIcon(CoinAnimationWindow.class.getResource("/coin2.gif"));
+    }
 
-    public final JLabel image = new JLabel(new ImageIcon(CoinAnimationWindow.class.getResource("/coin2.gif")));
+    public final JLabel image = new JLabel(COIN_ICON);
 
     public static void showCoin() {
         new CoinAnimationWindow().setVisible(true);
-
     }
 
     private CoinAnimationWindow() {
@@ -37,10 +40,9 @@ public class CoinAnimationWindow extends TransparentWindow {
 
         new Timer().scheduleAtFixedRate(new TimerTask() {
 
-            private long beforeDespawn = 900;
+            private long beforeDespawn = 600;
             private long goUp = 150;
             private int offsetY = -32;
-            private int offsetX = -8;
             private JLabel score = new JLabel("+" + GameManager.CurrentGame.CoinsPerClick);
             {
                 score.setForeground(Color.white);
@@ -80,7 +82,7 @@ public class CoinAnimationWindow extends TransparentWindow {
 
                 int y1 = Double.valueOf(y + offsetY).intValue();
                 setLocation(x, y1);
-                
+
                 beforeDespawn--;
                 goUp--;
             }
