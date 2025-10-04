@@ -15,7 +15,7 @@ import javax.swing.SpringLayout;
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.ui.components.SavedGameSelection;
 import fn10.desktopClicker.util.ImageUtilites;
-import fn10.desktopClicker.util.SettingsManager;
+import fn10.desktopClicker.util.SaveManager;
 
 public class SavedGameSelector extends JFrame {
 
@@ -51,7 +51,7 @@ public class SavedGameSelector extends JFrame {
         InnerScroll.setLayout(InnerLay);
 
         try {
-            for (SavedGame game : SettingsManager.load().games) {
+            for (SavedGame game : SaveManager.load().games) {
                 InnerScroll.add(new SavedGameSelection(game));
                 InnerScroll.add(Box.createVerticalStrut(5));
             }

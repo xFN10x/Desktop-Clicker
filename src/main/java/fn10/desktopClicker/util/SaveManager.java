@@ -17,7 +17,7 @@ import com.google.gson.JsonSyntaxException;
 
 import fn10.desktopClicker.game.SavedGame;
 
-public class SettingsManager {
+public class SaveManager {
 
     private transient static final Gson gson = new GsonBuilder()
             .registerTypeAdapter(Instant.class, new GsonTypeAdapters.InstantTypeAdapter())
@@ -51,15 +51,15 @@ public class SettingsManager {
      * @throws JsonSyntaxException If user modified, and broke the file
      * @throws IOException         If reading the file failed.
      */
-    public static SettingsManager load() throws JsonSyntaxException, IOException {
+    public static SaveManager load() throws JsonSyntaxException, IOException {
         if (SettingsPath.toFile().exists()) {
             if (Files.readString(SettingsPath).isEmpty()) {
                 SettingsPath.toFile().delete();
-                return new SettingsManager();
+                return new SaveManager();
             }
-            return gson.fromJson(Files.readString(SettingsPath), SettingsManager.class);
+            return gson.fromJson(Files.readString(SettingsPath), SaveManager.class);
         } else {
-            return new SettingsManager();
+            return new SaveManager();
         }
     }
 

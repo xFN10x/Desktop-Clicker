@@ -11,7 +11,7 @@ import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 import fn10.desktopClicker.ui.notTransparent.SavedGameSelector;
-import fn10.desktopClicker.util.SettingsManager;
+import fn10.desktopClicker.util.SaveManager;
 
 public class MainMenu extends TransparentWindow {
 
@@ -45,7 +45,7 @@ public class MainMenu extends TransparentWindow {
 
                 SavedGame newGame = new SavedGame(option, Instant.now());
 
-                SettingsManager settings = SettingsManager.load();
+                SaveManager settings = SaveManager.load();
                 settings.games.add(newGame);
                 settings.save();
 

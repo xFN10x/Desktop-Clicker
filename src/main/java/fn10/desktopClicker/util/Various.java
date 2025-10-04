@@ -68,6 +68,7 @@ public class Various {
                 } else {
                     clip = preloadAudio(audioFile);
                 }
+                if (clip == null) return;
                 
                 if (clip.isRunning()) {
                     clip.stop();

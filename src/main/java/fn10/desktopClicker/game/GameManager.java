@@ -12,111 +12,113 @@ import java.util.random.RandomGenerator;
 
 import fn10.desktopClicker.ui.CoinWindow;
 import fn10.desktopClicker.ui.GameBar;
-import fn10.desktopClicker.util.SettingsManager;
+import fn10.desktopClicker.util.SaveManager;
 import fn10.desktopClicker.util.Various;
 
 public class GameManager {
 
-    public static SavedGame CurrentGame;
-    private static SavedGame LoadedGame;
-    private static Thread RunningThread = null;
+	public static SavedGame CurrentGame;
+	private static SavedGame LoadedGame;
+	private static Thread RunningThread = null;
 
-    public static boolean Paused = false;
+	public static boolean Paused = false;
 
-    private static long NextCoinSpawn = 0;
-    private static long MiningTimer = 0;
-    private static TimerTask OnGameTick = new TimerTask() {
+	private static long NextCoinSpawn = 0;
+	private static long MiningTimer = 0;
+	private static TimerTask OnGameTick = new TimerTask() {
 
-        @Override
-        public void run() {
-            if (CurrentGame.CoinMiningLevel >= 0 && CurrentGame.CoinMiningInterval >= 0) {
-                if (MiningTimer <= 0) {
-                    MiningTimer = CurrentGame.CoinMiningInterval;
-                    Various.playRandomMiningSound();
-                    CurrentGame.Coins += CurrentGame.CoinsPerClick;
-                } else {
-                    MiningTimer--;
-                }
-            }
-            System.out.println(MiningTimer);
+		@Override
+		public void run() {
+			if (Paused)
+				return;
 
-            if (NextCoinSpawn <= 0) {
-                NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(
-                        Math.max(CurrentGame.CoinMaxTime - 2000, 200),
-                        Math.max(CurrentGame.CoinMaxTime, 500));
-                System.out.println("Coin!");
-                CoinWindow.spawnNew();
-            }
-            NextCoinSpawn--;
+			if (CurrentGame.CoinMiningLevel >= 0 && CurrentGame.CoinMiningInterval >= 0) {
+				if (MiningTimer <= 0) {
+					MiningTimer = CurrentGame.CoinMiningInterval;
+					Various.playRandomMiningSound();
+					CurrentGame.Coins += CurrentGame.CoinsPerClick;
+				} else {
+					MiningTimer--;
+				}
+			}
 
-        }
+			if (NextCoinSpawn <= 0) {
+				NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(
+						Math.max(CurrentGame.CoinMaxTime - 2000, 200),
+						Math.max(CurrentGame.CoinMaxTime, 500));
+				System.out.println("Coin!");
+				CoinWindow.spawnNew();
+			}
+			NextCoinSpawn--;
 
-    };
+		}
 
-    public static void Run() {
-        RunningThread = new Thread(() -> {
-            new Timer().scheduleAtFixedRate(OnGameTick, 1, 1);
-        });
-        RunningThread.start();
-    }
+	};
 
-    public static void UpdateCoins(Point location, long life) {
-        if (CurrentGame.CurrentCoins == null) {
-            System.out.println("Was null");
-            CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
-        }
+	public static void Run() {
+		RunningThread = new Thread(() -> {
+			new Timer().scheduleAtFixedRate(OnGameTick, 1, 1);
+		});
+		RunningThread.start();
+	}
 
-        if (life >= 0)
-            CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
-        else if (life < 0) {
-            {
-                System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
+	public static void UpdateCoins(Point location, long life) {
+		if (CurrentGame.CurrentCoins == null) {
+			System.out.println("Was null");
+			CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
+		}
 
-            }
-        }
-    }
+		if (life >= 0)
+			CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
+		else if (life < 0) {
+			{
+				System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
 
-    public static void SaveCurrentGame() {
-        if (LoadedGame == null) {
-            System.out.println("No game is loaded!");
-            return;
-        }
+			}
+		}
+	}
 
-        try {
-            CurrentGame.LastPlayed = Instant.now();
+	public static void SaveCurrentGame() {
+		if (LoadedGame == null) {
+			System.out.println("No game is loaded!");
+			return;
+		}
 
-            SettingsManager settings = SettingsManager.load();
+		try {
+			CurrentGame.LastPlayed = Instant.now();
 
-            settings.removeGame(CurrentGame.GameName);
-            settings.games.add(CurrentGame);
-            settings.save();
+			SaveManager settings = SaveManager.load();
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+			settings.removeGame(CurrentGame.GameName);
+			settings.games.add(CurrentGame);
+			settings.save();
 
-    public static void LoadGame(SavedGame game) {
-        Paused = true;
-        CurrentGame = game;
-        LoadedGame = game;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-        for (Window windows : Window.getWindows()) {
-            windows.setVisible(false);
-        }
+	public static void LoadGame(SavedGame game) {
+		Paused = true;
+		CurrentGame = game;
+		LoadedGame = game;
 
-        new GameBar().setVisible(true);
+		for (Window windows : Window.getWindows()) {
+			windows.setVisible(false);
+		}
 
-        if (CurrentGame.CurrentCoins != null)
-            for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {
-                Point key = entry.getKey();
-                System.out.println(
-                        "Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
-                CoinWindow.spawnNew(key, entry.getValue());
-            }
+		new GameBar().setVisible(true);
 
-        Run();
-        Paused = false;
-    }
+		if (CurrentGame.CurrentCoins != null)
+			for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {
+				Point key = entry.getKey();
+				System.out.println(
+						"Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
+				CoinWindow.spawnNew(key, entry.getValue());
+			}
+
+		Run();
+		Paused = false;
+	}
 
 }

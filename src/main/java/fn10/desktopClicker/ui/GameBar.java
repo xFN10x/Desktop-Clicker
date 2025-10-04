@@ -12,12 +12,14 @@ import javax.swing.JLabel;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
+import fn10.desktopClicker.ui.notTransparent.SettingsWindow;
 import fn10.desktopClicker.ui.notTransparent.UpgradeWindow;
 
 public class GameBar extends TransparentWindow {
 
     public final JLabel CoinsLabel = new JLabel("Coins: 0");
     public final JButton UpgradeButton = new JButton("Upgrades!");
+    public final JButton SettingsButton = new JButton("Settings...");
     public final JButton SaveButton = new JButton("Save");
     public final JButton SaveExitButton = new JButton("Save & Exit");
     public final JButton ExitButton = new JButton("Exit");
@@ -25,7 +27,7 @@ public class GameBar extends TransparentWindow {
     public final BoxLayout Lay = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
 
     public GameBar() {
-        super(new Dimension(90, 150),false);
+        super(new Dimension(100, 175),false);
 
         setLayout(Lay);
 
@@ -49,9 +51,13 @@ public class GameBar extends TransparentWindow {
             UpgradeWindow.showUpgrades();
         });
 
+        SettingsButton.addActionListener(ac -> {
+            SettingsWindow.showWindow();
+        });
 
         CoinsLabel.setAlignmentX(0.5f);
         UpgradeButton.setAlignmentX(0.5f);
+        SettingsButton.setAlignmentX(0.5f);
         SaveButton.setAlignmentX(0.5f);
         SaveExitButton.setAlignmentX(0.5f);
         ExitButton.setAlignmentX(0.5f);
@@ -69,6 +75,8 @@ public class GameBar extends TransparentWindow {
         add(Box.createVerticalStrut(5));
         add(UpgradeButton);
         add(Box.createVerticalGlue());
+        add(SettingsButton);
+        add(Box.createVerticalStrut(5));
         add(SaveButton);
         add(Box.createVerticalStrut(5));
         add(SaveExitButton);

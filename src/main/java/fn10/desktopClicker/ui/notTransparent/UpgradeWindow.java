@@ -1,6 +1,8 @@
 package fn10.desktopClicker.ui.notTransparent;
 
 import java.awt.Color;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -44,7 +46,15 @@ public class UpgradeWindow extends JDialog {
     private UpgradeWindow() {
         super(null, "Upgrades", ModalityType.APPLICATION_MODAL);
 
-        setSize(1200, 800);
+        GameManager.Paused = true;
+
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
+                GameManager.Paused = false;
+            }
+        });
+
+        setSize(1200, 705);
         setResizable(false);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
