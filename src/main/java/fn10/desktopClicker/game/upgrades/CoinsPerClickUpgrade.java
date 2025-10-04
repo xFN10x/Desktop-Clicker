@@ -42,7 +42,7 @@ public class CoinsPerClickUpgrade implements IUpgrade {
     }
 
     @Override
-    public boolean isMaxLevel(SavedGame game) { //TODO: actually add this 
+    public boolean isMaxLevel(SavedGame game) {
         if (game.CoinsPerClick >= Integer.MAX_VALUE) {
             return true;
         }

@@ -1,7 +1,6 @@
 plugins {
     application
     id("com.gradleup.shadow") version "9.2.2"
-    id("org.panteleyev.jpackageplugin") version "1.7.6"
 }
 
 repositories {
@@ -26,10 +25,10 @@ application {
     mainClass = "fn10.desktopClicker.Launcher"
 }
 
-val version = "1.0"
+val version = "1.0.0"
 
 tasks.shadowJar {
-  archiveBaseName = "3dsUnistoreCreator"
+  archiveBaseName = "DesktopClicker"
   archiveVersion = version
   destinationDirectory = layout.buildDirectory.dir("builtJars")
 }

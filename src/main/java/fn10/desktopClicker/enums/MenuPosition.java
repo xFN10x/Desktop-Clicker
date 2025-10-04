@@ -1,7 +1,5 @@
 package fn10.desktopClicker.enums;
 
-import java.awt.Rectangle;
-
 public enum MenuPosition {
     TopLeft(0, 0),
     TopRight(1f, 0),

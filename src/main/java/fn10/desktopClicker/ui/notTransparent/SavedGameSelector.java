@@ -36,7 +36,6 @@ public class SavedGameSelector extends JFrame {
             public void windowClosing(WindowEvent e) {
                 openAfter.setVisible(true);
             }
-
         });
 
         ScrollPane.getHorizontalScrollBar().setUnitIncrement(16);
