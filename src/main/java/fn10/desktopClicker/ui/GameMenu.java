@@ -14,8 +14,12 @@ import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 import fn10.desktopClicker.ui.notTransparent.SettingsWindow;
 import fn10.desktopClicker.ui.notTransparent.UpgradeWindow;
+import fn10.desktopClicker.util.ImageUtilites;
+import fn10.desktopClicker.util.SaveManager;
 
-public class GameBar extends TransparentWindow {
+public class GameMenu extends TransparentWindow {
+
+    public static GameMenu CurrentMenu;
 
     public final JLabel CoinsLabel = new JLabel("Coins: 0");
     public final JButton UpgradeButton = new JButton("Upgrades!");
@@ -26,9 +30,31 @@ public class GameBar extends TransparentWindow {
 
     public final BoxLayout Lay = new BoxLayout(getContentPane(), BoxLayout.Y_AXIS);
 
-    public GameBar() {
-        super(new Dimension(100, 175),false);
+    public void ApplySettings() {
+        try {
+            SaveManager save = SaveManager.load();
 
+            setLocation(save.pos.getXAxisLocationFromWidth(
+                    (int) (Double.valueOf(ImageUtilites.getScreenWorkingArea(this).getWidth()).intValue()
+                            - (getWidth() * (save.pos.x)))),
+                    save.pos.getYAxisLocationFromHeight(
+                            (int) (Double.valueOf(ImageUtilites.getScreenWorkingArea(this).getHeight()).intValue()
+                                    - (getHeight() * (save.pos.y)))));
+
+            System.out.println(save.pos.getYAxisLocationFromHeight(
+                    (int) (Double.valueOf(ImageUtilites.getScreenWorkingArea(this).getHeight()).intValue()
+                            - (getHeight() * (save.pos.y)))));
+            System.out.println(save.pos.getXAxisLocationFromWidth(
+                    (int) (Double.valueOf(ImageUtilites.getScreenWorkingArea(this).getWidth()).intValue()
+                            - (getWidth() * (save.pos.x)))));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public GameMenu() {
+        super(new Dimension(100, 175), false);
+        CurrentMenu = this;
         setLayout(Lay);
 
         ExitButton.addActionListener(ac -> {
@@ -37,7 +63,7 @@ public class GameBar extends TransparentWindow {
 
         SaveExitButton.addActionListener(ac -> {
             GameManager.SaveCurrentGame();
-            
+
             System.exit(0);
         });
 
@@ -68,7 +94,7 @@ public class GameBar extends TransparentWindow {
             public void run() {
                 CoinsLabel.setText("Coins: " + GameManager.CurrentGame.Coins);
             }
-            
+
         }, 1, 1);
 
         add(CoinsLabel);
@@ -82,8 +108,10 @@ public class GameBar extends TransparentWindow {
         add(SaveExitButton);
         add(Box.createVerticalStrut(5));
         add(ExitButton);
-        
+
         setAlwaysOnTop(true);
+
+        ApplySettings();
     }
 
 }

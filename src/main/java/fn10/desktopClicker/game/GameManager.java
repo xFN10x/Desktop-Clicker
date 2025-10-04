@@ -11,7 +11,7 @@ import java.util.Map.Entry;
 import java.util.random.RandomGenerator;
 
 import fn10.desktopClicker.ui.CoinWindow;
-import fn10.desktopClicker.ui.GameBar;
+import fn10.desktopClicker.ui.GameMenu;
 import fn10.desktopClicker.util.SaveManager;
 import fn10.desktopClicker.util.Various;
 
@@ -107,7 +107,7 @@ public class GameManager {
 			windows.setVisible(false);
 		}
 
-		new GameBar().setVisible(true);
+		new GameMenu().setVisible(true);
 
 		if (CurrentGame.CurrentCoins != null)
 			for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {

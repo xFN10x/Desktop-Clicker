@@ -24,4 +24,6 @@ public interface IUpgrade {
 
     int getCoinRequirment(SavedGame game);
 
+    boolean isMaxLevel(SavedGame game);
+
 }

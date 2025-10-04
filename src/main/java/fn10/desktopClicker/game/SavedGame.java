@@ -12,7 +12,7 @@ public class SavedGame {
 
     public String GameName;
 
-    public int Coins = 0;
+    public long Coins = 0;
     public int CoinsPerClick = 1;
     public int CoinMaxTime = 5000;
 

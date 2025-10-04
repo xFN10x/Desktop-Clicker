@@ -1,10 +1,8 @@
 package fn10.desktopClicker.util;
 
 import java.awt.Font;
-import java.awt.FontFormatException;
 import java.awt.GraphicsEnvironment;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.util.HashMap;
@@ -59,6 +57,12 @@ public class Various {
     }
 
     public static void playSound(File audioFile) {
+        try {
+            if (!SaveManager.load().sound)
+                return;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         // do this on another thread so it doesnt slow down
         new Thread(() -> {
             try {
@@ -68,8 +72,9 @@ public class Various {
                 } else {
                     clip = preloadAudio(audioFile);
                 }
-                if (clip == null) return;
-                
+                if (clip == null)
+                    return;
+
                 if (clip.isRunning()) {
                     clip.stop();
                 }

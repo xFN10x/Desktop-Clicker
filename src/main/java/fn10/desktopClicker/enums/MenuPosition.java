@@ -11,8 +11,8 @@ public enum MenuPosition {
     BottomCenter(0.5f, 1f),
     Center(0.5f, 0.5f);
 
-    private final float x;
-    private final float y;
+    public final float x;
+    public final float y;
 
     private MenuPosition(float xAmount, float yAmount) {
         this.x = xAmount;
@@ -20,10 +20,10 @@ public enum MenuPosition {
     }
 
     public int getXAxisLocationFromWidth(int width) {
-        return (int) (width * (1 + x));
+        return (int) (width * (x));
     }
     
     public int getYAxisLocationFromHeight(int height) {
-        return (int) (height * (1 + y));
+        return (int) (height * (y));
     }
 }

@@ -15,6 +15,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
 
+import fn10.desktopClicker.enums.MenuPosition;
 import fn10.desktopClicker.game.SavedGame;
 
 public class SaveManager {
@@ -30,6 +31,9 @@ public class SaveManager {
     public transient static final Path SettingsPath = Path.of(MainFolderPath, "save.json");
 
     public List<SavedGame> games = new ArrayList<SavedGame>();
+    public MenuPosition pos = MenuPosition.DownLeft;
+    public boolean sound = true;
+    public boolean slower = false;
 
     public void removeGame(String Name) {
         List<SavedGame> building = new ArrayList<SavedGame>();

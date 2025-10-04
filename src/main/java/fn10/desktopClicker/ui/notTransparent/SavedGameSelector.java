@@ -9,7 +9,6 @@ import javax.swing.BoxLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.Spring;
 import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.SavedGame;
