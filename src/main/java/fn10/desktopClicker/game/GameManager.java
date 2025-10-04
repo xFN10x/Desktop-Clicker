@@ -109,6 +109,7 @@ public class GameManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Paused = false;
 	}
 
 	public static void LoadGame(SavedGame game) {

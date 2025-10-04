@@ -76,6 +76,11 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
             public void run() {
                 if (GameManager.Paused)
                     return;
+                if (beforeDespawn == (lifetime / 2)) {
+                    if ((100 - GameManager.CurrentGame.CoinAutoCollectChance) <= 0 || new Random().nextInt(100 - GameManager.CurrentGame.CoinAutoCollectChance) == 0) {
+                        mousePressed(null);
+                    }
+                }
                 if (beforeDespawn <= 0) {
                     if (fadeCounter == 1000)
                         GameManager.UpdateCoins(getLocation(), -1);
@@ -116,13 +121,13 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        if (e.getButton() == MouseEvent.BUTTON1) {
+        if (e == null || e.getButton() == MouseEvent.BUTTON1) {
             try {
                 onTick.cancel();
                 dispose();
                 GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick;
                 GameManager.UpdateCoins(getLocation(), -1);
-                CoinAnimationWindow.showCoin();
+                CoinAnimationWindow.showCoin(e == null ? getLocation() : null);
                 Various.playSound(new File(getClass().getResource("/coin.wav").toURI()));
             } catch (Exception e2) {
                 e2.printStackTrace();

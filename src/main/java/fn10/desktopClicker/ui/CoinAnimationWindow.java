@@ -23,18 +23,30 @@ public class CoinAnimationWindow extends TransparentWindow {
     public final JLabel image = new JLabel(COIN_ICON);
 
     public static void showCoin() {
-        new CoinAnimationWindow().setVisible(true);
+        new CoinAnimationWindow(null).setVisible(true);
     }
 
-    private CoinAnimationWindow() {
+    public static void showCoin(Point pos) {
+        new CoinAnimationWindow(pos).setVisible(true);
+    }
+
+    private CoinAnimationWindow(Point pos) {
         super(new Dimension(16, 64));
 
         add(image);
 
-        final Point basePos = MouseInfo.getPointerInfo().getLocation();
-        final int x = Double.valueOf(basePos.getX()).intValue();
-        final int y = Double.valueOf(basePos.getY()).intValue();
-        setLocation(x, y);
+        final int y;
+        final int x;
+        if (pos == null) {
+            final Point basePos = MouseInfo.getPointerInfo().getLocation();
+            x = Double.valueOf(basePos.getX()).intValue();
+            y = Double.valueOf(basePos.getY()).intValue();
+            setLocation(x, y);
+        } else {
+            x = (int) pos.getX();
+            y = (int) pos.getY();
+            setLocation(pos);
+        }
 
         setAlwaysOnTop(true);
 
@@ -81,7 +93,8 @@ public class CoinAnimationWindow extends TransparentWindow {
                 }
 
                 int y1 = Double.valueOf(y + offsetY).intValue();
-                setLocation(x, y1);
+                if (pos == null)
+                    setLocation(x, y1);
 
                 beforeDespawn--;
                 goUp--;
