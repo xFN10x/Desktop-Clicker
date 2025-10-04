@@ -2,9 +2,8 @@ package fn10.desktopClicker.util;
 
 import java.awt.Font;
 import java.awt.GraphicsEnvironment;
-import java.io.File;
 import java.io.InputStream;
-import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
@@ -25,9 +24,9 @@ public class Various {
 
     static {
         try {
-            preloadAudio(new File(Various.class.getResource("/cannotBuy.wav").toURI()));
-            preloadAudio(new File(Various.class.getResource("/coin.wav").toURI()));
-            preloadAudio(new File(Various.class.getResource("/upgrade.wav").toURI()));
+            preloadAudio(Various.class.getResource("/cannotBuy.wav"));
+            preloadAudio(Various.class.getResource("/coin.wav"));
+            preloadAudio(Various.class.getResource("/upgrade.wav"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -35,16 +34,16 @@ public class Various {
 
     public static void playRandomMiningSound() {
         try {
-            playSound(new File(Various.class
+            playSound(Various.class
                     .getResource(
-                            "/miningSounds/mine" + (Random.from(RandomGenerator.getDefault()).nextInt(3) + 1) + ".wav")
-                    .toURI()));
-        } catch (URISyntaxException e) {
+                            "/miningSounds/mine" + (Random.from(RandomGenerator.getDefault()).nextInt(3) + 1)
+                                    + ".wav"));
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static Clip preloadAudio(File file) {
+    private static Clip preloadAudio(URL file) {
         try {
             AudioInputStream ais = AudioSystem.getAudioInputStream(file);
             Clip clip = AudioSystem.getClip();
@@ -56,7 +55,7 @@ public class Various {
         }
     }
 
-    public static void playSound(File audioFile) {
+    public static void playSound(URL audioFile) {
         try {
             if (!SaveManager.load().sound)
                 return;

@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,6 +32,8 @@ public class SavedGameSelector extends JFrame {
         setSize(400, 500);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+
+        setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {

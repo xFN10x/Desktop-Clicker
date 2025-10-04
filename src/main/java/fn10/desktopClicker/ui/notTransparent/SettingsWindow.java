@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.IOException;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
@@ -47,6 +48,8 @@ public class SettingsWindow extends JDialog {
 
         GameManager.Paused = true;
 
+        setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
+        
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 GameManager.Paused = false;

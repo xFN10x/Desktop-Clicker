@@ -3,11 +3,9 @@ package fn10.desktopClicker.ui.notTransparent;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.io.File;
-import java.net.URISyntaxException;
-
 import javax.swing.Box;
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
@@ -59,6 +57,8 @@ public class UpgradeWindow extends JDialog {
         setSize(1200, 705);
         setResizable(false);
 
+        setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
+
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         setAlwaysOnTop(true);
@@ -100,7 +100,7 @@ public class UpgradeWindow extends JDialog {
                         SavedGame game = GameManager.CurrentGame;
                         if (game.Coins >= iUpgrade.getCoinRequirment(game)) {
                             game.Coins -= iUpgrade.getCoinRequirment(game);
-                            Various.playSound(new File(getClass().getResource("/upgrade.wav").toURI()));
+                            Various.playSound(getClass().getResource("/upgrade.wav"));
                             iUpgrade.Upgrade(GameManager.CurrentGame);
                             if (!iUpgrade.isMaxLevel(game)) {
                                 upgradeButton
@@ -116,9 +116,9 @@ public class UpgradeWindow extends JDialog {
                                             + " <br><br><br><br>Level: " + iUpgrade.getLevel(game)
                                             + "</html>");
                         } else {
-                            Various.playSound(new File(getClass().getResource("/cannotBuy.wav").toURI()));
+                            Various.playSound(getClass().getResource("/cannotBuy.wav"));
                         }
-                    } catch (URISyntaxException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                     }
                 });

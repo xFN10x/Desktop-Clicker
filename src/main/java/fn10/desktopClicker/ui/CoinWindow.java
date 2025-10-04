@@ -128,7 +128,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                 GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick;
                 GameManager.UpdateCoins(getLocation(), -1);
                 CoinAnimationWindow.showCoin(e == null ? getLocation() : null);
-                Various.playSound(new File(getClass().getResource("/coin.wav").toURI()));
+                Various.playSound(getClass().getResource("/coin.wav"));
             } catch (Exception e2) {
                 e2.printStackTrace();
             }
