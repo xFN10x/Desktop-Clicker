@@ -17,6 +17,7 @@ import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
+import fn10.desktopClicker.game.upgrades.CoinAutoCollectUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinMiningUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
@@ -37,6 +38,7 @@ public class UpgradeWindow extends JDialog {
             new CoinsPerClickUpgrade(),
             new CoinSpeedUpgrade(),
             new CoinMiningUpgrade(),
+            new CoinAutoCollectUpgrade(),
     };
 
     public static void showUpgrades() {
@@ -82,8 +84,17 @@ public class UpgradeWindow extends JDialog {
                                 + " <br><br><br><br>Level: " + iUpgrade.getLevel(GameManager.CurrentGame) + "</html>");
                 text.setForeground(Color.white);
                 JLabel upgradePanel = new JLabel(iUpgrade.getUpgradeImage());
-                JButton upgradeButton = new JButton(
-                        "Upgrade (" + iUpgrade.getCoinRequirment(GameManager.CurrentGame) + " coins)");
+                JButton upgradeButton = new JButton();
+
+                if (!iUpgrade.isMaxLevel(GameManager.CurrentGame)) {
+                    upgradeButton
+                            .setText("Upgrade (" + iUpgrade.getCoinRequirment(GameManager.CurrentGame) + " coins)");
+                } else {
+                    upgradeButton.setEnabled(false);
+                    upgradeButton
+                            .setText("Max Level");
+                }
+
                 upgradeButton.addActionListener(ac -> {
                     try {
                         SavedGame game = GameManager.CurrentGame;
@@ -91,8 +102,14 @@ public class UpgradeWindow extends JDialog {
                             game.Coins -= iUpgrade.getCoinRequirment(game);
                             Various.playSound(new File(getClass().getResource("/upgrade.wav").toURI()));
                             iUpgrade.Upgrade(GameManager.CurrentGame);
-                            upgradeButton
-                                    .setText("Upgrade (" + iUpgrade.getCoinRequirment(game) + " coins)");
+                            if (!iUpgrade.isMaxLevel(game)) {
+                                upgradeButton
+                                        .setText("Upgrade (" + iUpgrade.getCoinRequirment(game) + " coins)");
+                            } else {
+                                upgradeButton.setEnabled(false);
+                                upgradeButton
+                                        .setText("Max Level");
+                            }
                             text.setText(
                                     "<html> <b>" + iUpgrade.getUpgradeName() + "</b> <br><br> "
                                             + iUpgrade.getUpgradeDescription()

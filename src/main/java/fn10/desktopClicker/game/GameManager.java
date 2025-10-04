@@ -10,6 +10,11 @@ import java.util.TimerTask;
 import java.util.Map.Entry;
 import java.util.random.RandomGenerator;
 
+import fn10.desktopClicker.game.upgrades.CoinAutoCollectUpgrade;
+import fn10.desktopClicker.game.upgrades.CoinMiningUpgrade;
+import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
+import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
+import fn10.desktopClicker.game.upgrades.IUpgrade;
 import fn10.desktopClicker.ui.CoinWindow;
 import fn10.desktopClicker.ui.GameMenu;
 import fn10.desktopClicker.util.SaveManager;
@@ -22,6 +27,13 @@ public class GameManager {
 	private static Thread RunningThread = null;
 
 	public static boolean Paused = false;
+
+	private static final IUpgrade[] upgrades = new IUpgrade[] {
+			new CoinsPerClickUpgrade(),
+			new CoinSpeedUpgrade(),
+			new CoinMiningUpgrade(),
+			new CoinAutoCollectUpgrade(),
+	};
 
 	private static long NextCoinSpawn = 0;
 	private static long MiningTimer = 0;
@@ -79,6 +91,7 @@ public class GameManager {
 	}
 
 	public static void SaveCurrentGame() {
+		Paused = true;
 		if (LoadedGame == null) {
 			System.out.println("No game is loaded!");
 			return;
@@ -108,6 +121,11 @@ public class GameManager {
 		}
 
 		new GameMenu().setVisible(true);
+
+		for (IUpgrade upgrade : upgrades) {
+			upgrade.setLevel(game);
+			upgrade.isMaxLevel(game);
+		}
 
 		if (CurrentGame.CurrentCoins != null)
 			for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {

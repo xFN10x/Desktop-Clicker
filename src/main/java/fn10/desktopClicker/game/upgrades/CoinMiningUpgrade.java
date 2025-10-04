@@ -31,7 +31,7 @@ public class CoinMiningUpgrade implements IUpgrade {
         if (level <= 1) {
             game.CoinMiningInterval = -1;
         } else
-            game.CoinMiningInterval = 6000 - (150 * (level - 1)); //get the max level by doing 6000/150
+            game.CoinMiningInterval = 6000 - (150 * (level - 1)); // get the max level by doing 6000/150
 
         game.CoinMiningLevel = level;
     }
@@ -52,7 +52,11 @@ public class CoinMiningUpgrade implements IUpgrade {
             game.CoinMiningLevel = 40;
             return true;
         } else
-        return false;
+            return false;
     }
 
+    @Override
+    public void setLevel(SavedGame game) {
+        setLevel(game.CoinMiningLevel, game);
+    }
 }

@@ -13,11 +13,15 @@ public class SavedGame {
     public String GameName;
 
     public long Coins = 0;
+
     public int CoinsPerClick = 1;
+
     public int CoinMaxTime = 5000;
 
     public int CoinMiningInterval = -1;
     public int CoinMiningLevel = 1;
+
+    public int CoinAutoCollectChance = 0;
 
     /**
      * im to lazy to figure out the reverse conversion for it, so just store it here

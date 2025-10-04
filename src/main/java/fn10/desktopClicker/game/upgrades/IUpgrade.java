@@ -20,6 +20,8 @@ public interface IUpgrade {
      */
     void setLevel(int level, SavedGame game);
 
+    void setLevel(SavedGame game);
+
     void Upgrade(SavedGame game);
 
     int getCoinRequirment(SavedGame game);
