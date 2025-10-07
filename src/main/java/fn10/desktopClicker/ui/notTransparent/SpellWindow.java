@@ -44,7 +44,7 @@ public class SpellWindow extends JDialog {
             }
         });
 
-        setSize(700, 800);
+        setSize(601, 500);
         setResizable(false);
 
         setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
