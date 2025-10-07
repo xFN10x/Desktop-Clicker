@@ -13,6 +13,8 @@ public class SavedGame {
     public String GameName;
 
     public long Coins = 0;
+    public long Mana = 5;
+    public long MaxMana = 5;
 
     public int CoinsPerClick = 1;
 
