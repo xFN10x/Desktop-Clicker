@@ -1,5 +1,6 @@
 package fn10.desktopClicker.ui.notTransparent;
 
+import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.Box;
@@ -13,6 +14,8 @@ import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.spells.IBaseSpell;
+import fn10.desktopClicker.game.spells.ICharageableSpell;
+import fn10.desktopClicker.game.spells.ISpell;
 import fn10.desktopClicker.game.spells.SummonCoins;
 import fn10.desktopClicker.util.ImageUtilites;
 
@@ -72,7 +75,22 @@ public class SpellWindow extends JDialog {
                 JPanel panel = new JPanel();
                 JLabel image = new JLabel(spell.getSpellImage());
 
-                panel.setLayout(lay);
+                JLabel text = new JLabel(
+                        "<html> <b>" + spell.getSpellName() + "</b> <br><br> " + spell.getSpellDescription()
+                                + " <br><br><br><br>" + (spell instanceof ICharageableSpell ? "Hold button to charge!"
+                                        : spell instanceof ISpell ? "Mana cost: " + ((ISpell) spell).getManaRequirment()
+                                                : "")
+                                + "</html>");
+
+                
+                text.setForeground(Color.white);
+
+                image.setLayout(lay);
+                
+                lay.putConstraint(SpringLayout.WEST, text, 5, SpringLayout.WEST, image);
+                lay.putConstraint(SpringLayout.NORTH, text, 5, SpringLayout.NORTH, image);
+
+                image.add(text);
 
                 panel.add(image);
 
