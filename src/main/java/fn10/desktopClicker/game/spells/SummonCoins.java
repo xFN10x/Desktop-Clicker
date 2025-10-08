@@ -22,8 +22,8 @@ public class SummonCoins implements ICharageableSpell {
     }
 
     @Override
-    public void cast(SavedGame game, int manaSpent) {
-        game.Coins += manaSpent / 5;
+    public void cast(SavedGame game, float manaSpent) {
+        game.Coins += manaSpent * 2;
     }
 
     @Override

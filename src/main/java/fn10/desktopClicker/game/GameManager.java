@@ -62,7 +62,13 @@ public class GameManager {
 				CoinWindow.spawnNew();
 			}
 			NextCoinSpawn--;
-
+			if (CurrentGame.Mana < CurrentGame.MaxMana) {
+				System.out.println("mana: " + CurrentGame.Mana);
+				CurrentGame.Mana += 0.01f;
+				if (CurrentGame.Mana >= CurrentGame.MaxMana) {
+					CurrentGame.Mana = CurrentGame.MaxMana;
+				}
+			}
 		}
 
 	};

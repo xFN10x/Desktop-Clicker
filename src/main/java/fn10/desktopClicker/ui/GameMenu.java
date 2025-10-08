@@ -104,9 +104,7 @@ public class GameMenu extends TransparentWindow {
             @Override
             public void run() {
                 CoinsLabel.setText("Coins: " + GameManager.CurrentGame.Coins);
-                SavedGame game = GameManager.CurrentGame;
-                ManaBar.setValue((int) ((game.MaxMana / game.Mana) * 100));
-                // System.out.println("Mana is at: " + ((int) ((game.MaxMana / game.Mana) * 100)));
+                ManaBar.setValue((int) ((GameManager.CurrentGame.Mana / GameManager.CurrentGame.MaxMana) * 100));
             }
 
         }, 1, 1);
