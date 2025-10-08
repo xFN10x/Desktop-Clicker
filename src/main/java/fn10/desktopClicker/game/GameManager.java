@@ -60,12 +60,12 @@ public class GameManager {
 				NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(
 						Math.max(CurrentGame.CoinMaxTime - 2000, 200),
 						Math.max(CurrentGame.CoinMaxTime, 500));
-				System.out.println("Coin!");
+				//System.out.println("Coin!");
 				CoinWindow.spawnNew();
 			}
 			NextCoinSpawn--;
 			if (CurrentGame.Mana < CurrentGame.MaxMana) {
-				System.out.println("mana: " + CurrentGame.Mana);
+				//System.out.println("mana: " + CurrentGame.Mana);
 				CurrentGame.Mana += CurrentGame.ManaRecharge;
 				if (CurrentGame.Mana >= CurrentGame.MaxMana) {
 					CurrentGame.Mana = CurrentGame.MaxMana;
@@ -84,7 +84,7 @@ public class GameManager {
 
 	public static void UpdateCoins(Point location, long life) {
 		if (CurrentGame.CurrentCoins == null) {
-			System.out.println("Was null");
+			//System.out.println("Was null");
 			CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
 		}
 
@@ -92,8 +92,7 @@ public class GameManager {
 			CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
 		else if (life < 0) {
 			{
-				System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
-
+				//System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
 			}
 		}
 	}

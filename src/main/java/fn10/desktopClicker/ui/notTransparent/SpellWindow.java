@@ -6,8 +6,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.time.Instant;
-import java.time.temporal.ChronoField;
-import java.time.temporal.TemporalField;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -137,6 +135,7 @@ public class SpellWindow extends JDialog {
                                     button.setEnabled(!(GameManager.CurrentGame.Mana <= 0));
                                     if (manaCost >= GameManager.CurrentGame.Mana) {
                                         manaCost = GameManager.CurrentGame.Mana;
+                                        return;
                                     }
                                     if (!isPressing)
                                         return;

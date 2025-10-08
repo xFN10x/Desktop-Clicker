@@ -44,7 +44,7 @@ public class ManaSpeedUpgrade implements IUpgrade {
     @Override
     public boolean isMaxLevel(SavedGame game) {
         if (getLevel(game) >= 100) {
-            game.CoinAutoCollectChance = 100;
+            setLevel(100, game);;
             return true;
         }
         return false;
