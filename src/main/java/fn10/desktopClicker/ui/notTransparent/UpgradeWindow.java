@@ -15,10 +15,6 @@ import javax.swing.SpringLayout;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
-import fn10.desktopClicker.game.upgrades.CoinAutoCollectUpgrade;
-import fn10.desktopClicker.game.upgrades.CoinMiningUpgrade;
-import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
-import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
 import fn10.desktopClicker.util.ImageUtilites;
 import fn10.desktopClicker.util.Various;
@@ -32,12 +28,7 @@ public class UpgradeWindow extends JDialog {
     private final SpringLayout Lay = new SpringLayout();
     private final BoxLayout InnerLay = new BoxLayout(InnerScroll, BoxLayout.X_AXIS);
 
-    private final IUpgrade[] upgrades = new IUpgrade[] {
-            new CoinsPerClickUpgrade(),
-            new CoinSpeedUpgrade(),
-            new CoinMiningUpgrade(),
-            new CoinAutoCollectUpgrade(),
-    };
+    private final IUpgrade[] upgrades = GameManager.upgrades;
 
     public static void showUpgrades() {
         new UpgradeWindow().setVisible(true);

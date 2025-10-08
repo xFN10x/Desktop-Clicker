@@ -14,7 +14,12 @@ public class SavedGame {
 
     public long Coins = 0;
     public float Mana = 5;
-    public float MaxMana = 5;
+
+    public float MaxMana = 5f;
+    public float ManaRecharge = 0.01f;
+    public float ManaChargeMulipler = 1f;
+    public int ManaChargeMuliplerLevel = 1;
+
 
     public int CoinsPerClick = 1;
 

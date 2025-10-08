@@ -15,6 +15,7 @@ import fn10.desktopClicker.game.upgrades.CoinMiningUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
+import fn10.desktopClicker.game.upgrades.ManaSpeedUpgrade;
 import fn10.desktopClicker.ui.CoinWindow;
 import fn10.desktopClicker.ui.GameMenu;
 import fn10.desktopClicker.util.SaveManager;
@@ -28,11 +29,12 @@ public class GameManager {
 
 	public static boolean Paused = false;
 
-	private static final IUpgrade[] upgrades = new IUpgrade[] {
+	public static final IUpgrade[] upgrades = new IUpgrade[] {
 			new CoinsPerClickUpgrade(),
 			new CoinSpeedUpgrade(),
 			new CoinMiningUpgrade(),
 			new CoinAutoCollectUpgrade(),
+			new ManaSpeedUpgrade(),
 	};
 
 	private static long NextCoinSpawn = 0;
@@ -64,7 +66,7 @@ public class GameManager {
 			NextCoinSpawn--;
 			if (CurrentGame.Mana < CurrentGame.MaxMana) {
 				System.out.println("mana: " + CurrentGame.Mana);
-				CurrentGame.Mana += 0.01f;
+				CurrentGame.Mana += CurrentGame.ManaRecharge;
 				if (CurrentGame.Mana >= CurrentGame.MaxMana) {
 					CurrentGame.Mana = CurrentGame.MaxMana;
 				}

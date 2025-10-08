@@ -12,7 +12,6 @@ import javax.swing.JLabel;
 import javax.swing.JProgressBar;
 
 import fn10.desktopClicker.game.GameManager;
-import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 import fn10.desktopClicker.ui.notTransparent.SettingsWindow;
 import fn10.desktopClicker.ui.notTransparent.SpellWindow;

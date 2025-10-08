@@ -135,13 +135,14 @@ public class SpellWindow extends JDialog {
                                 public void run() {
                                     maxMana.setText("Max Mana Cost: " + GameManager.CurrentGame.Mana);
                                     button.setEnabled(!(GameManager.CurrentGame.Mana <= 0));
+                                    if (manaCost >= GameManager.CurrentGame.Mana) return;
                                     if (!isPressing || manaCost >= GameManager.CurrentGame.Mana)
                                         return;
                                     long heldTimeSeconds = (Instant.now().getEpochSecond()
                                             - pressedTime.getEpochSecond());
                                     long heldTimeNano = (Instant.now().getNano()
                                             - pressedTime.getNano());
-                                    float heldTime = (float) heldTimeSeconds + ((float) heldTimeNano / 1000000000);
+                                    float heldTime = ((float) heldTimeSeconds + ((float) heldTimeNano / 1000000000)) * 5;
 
                                     SavedGame game = GameManager.CurrentGame;
                                     manaCost = ((ICharageableSpell) spell).getManaRequirment(game, heldTime);

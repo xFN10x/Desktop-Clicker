@@ -18,12 +18,12 @@ public class SummonCoins implements ICharageableSpell {
 
     @Override
     public String getSpellDescription() {
-        return "Earn a spontaneous amount of coins, based on mana.";
+        return "Earn a spontaneous amount of coins, based on mana spent, and how many coins you get per-click";
     }
 
     @Override
     public void cast(SavedGame game, float manaSpent) {
-        game.Coins += manaSpent * 2;
+        game.Coins += manaSpent * 5;
     }
 
     @Override
