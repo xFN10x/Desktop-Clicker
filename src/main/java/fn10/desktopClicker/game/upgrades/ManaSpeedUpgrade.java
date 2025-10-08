@@ -23,12 +23,12 @@ public class ManaSpeedUpgrade implements IUpgrade {
 
     @Override
     public int getLevel(SavedGame game) {
-        return (int) Math.max(game.ManaRecharge / 0.005f, 1);
+        return (int) Math.max(game.ManaRecharge / 0.001f, 1);
     }
 
     @Override
     public void setLevel(int level, SavedGame game) {
-        game.ManaRecharge = (float) (level * 0.005);
+        game.ManaRecharge = (float) (level * 0.001);
     }
 
     @Override
@@ -38,12 +38,12 @@ public class ManaSpeedUpgrade implements IUpgrade {
 
     @Override
     public int getCoinRequirment(SavedGame game) {
-        return 200 + (200 * getLevel(game));
+        return 50 + (50 * getLevel(game));
     }
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (getLevel(game) >= 30) {
+        if (getLevel(game) >= 100) {
             game.CoinAutoCollectChance = 100;
             return true;
         }
