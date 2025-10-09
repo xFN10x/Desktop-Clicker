@@ -71,19 +71,23 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
 
             public long beforeDespawn = lifetime;
             private int fadeCounter = 1000;
+            private boolean updated = false;
 
             @Override
             public void run() {
                 if (GameManager.Paused)
                     return;
                 if (beforeDespawn == (lifetime / 2)) {
-                    if ((100 - GameManager.CurrentGame.CoinAutoCollectChance) <= 0 || new Random().nextInt(100 - GameManager.CurrentGame.CoinAutoCollectChance) == 0) {
+                    if ((100 - GameManager.CurrentGame.CoinAutoCollectChance) <= 0
+                            || new Random().nextInt(100 - GameManager.CurrentGame.CoinAutoCollectChance) == 0) {
                         mousePressed(null);
                     }
                 }
                 if (beforeDespawn <= 0) {
-                    if (fadeCounter == 1000)
+                    if (!updated) {
                         GameManager.UpdateCoins(getLocation(), -1);
+                        updated = true;
+                    }
                     int size = (fadeCounter / 10);
                     image.setSize(size, size);
                     doLayout();

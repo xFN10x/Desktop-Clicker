@@ -16,6 +16,7 @@ import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
 import fn10.desktopClicker.game.upgrades.ManaSpeedUpgrade;
+import fn10.desktopClicker.game.upgrades.MaxManaUpgrade;
 import fn10.desktopClicker.ui.CoinWindow;
 import fn10.desktopClicker.ui.GameMenu;
 import fn10.desktopClicker.util.SaveManager;
@@ -35,6 +36,7 @@ public class GameManager {
 			new CoinMiningUpgrade(),
 			new CoinAutoCollectUpgrade(),
 			new ManaSpeedUpgrade(),
+			new MaxManaUpgrade(),
 	};
 
 	private static long NextCoinSpawn = 0;
@@ -84,7 +86,7 @@ public class GameManager {
 
 	public static void UpdateCoins(Point location, long life) {
 		if (CurrentGame.CurrentCoins == null) {
-			//System.out.println("Was null");
+			System.out.println("Was null");
 			CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
 		}
 
@@ -92,7 +94,7 @@ public class GameManager {
 			CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
 		else if (life < 0) {
 			{
-				//System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
+				System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
 			}
 		}
 	}

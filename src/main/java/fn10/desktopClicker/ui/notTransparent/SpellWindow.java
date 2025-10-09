@@ -88,9 +88,6 @@ public class SpellWindow extends JDialog {
 
                 JLabel text = new JLabel(
                         "<html> <b>" + spell.getSpellName() + "</b> <br><br> " + spell.getSpellDescription()
-                                + " <br><br><br><br>" + (spell instanceof ICharageableSpell ? "Hold button to charge!"
-                                        : spell instanceof ISpell ? "Mana cost: " + ((ISpell) spell).getManaRequirment()
-                                                : "")
                                 + "</html>");
 
                 JButton button = new JButton((spell instanceof ICharageableSpell ? "Hold to Charge"
@@ -102,6 +99,7 @@ public class SpellWindow extends JDialog {
                 image.setLayout(lay);
 
                 lay.putConstraint(SpringLayout.WEST, text, 10, SpringLayout.WEST, image);
+                lay.putConstraint(SpringLayout.EAST, text, -300, SpringLayout.EAST, image);
                 lay.putConstraint(SpringLayout.NORTH, text, 5, SpringLayout.NORTH, image);
 
                 lay.putConstraint(SpringLayout.WEST, button, 0, SpringLayout.WEST, text);
@@ -144,13 +142,15 @@ public class SpellWindow extends JDialog {
                                     long heldTimeNano = (Instant.now().getNano()
                                             - pressedTime.getNano());
                                     float heldTime = ((float) heldTimeSeconds + ((float) heldTimeNano / 1000000000))
-                                            * GameManager.CurrentGame.ManaChargeMulipler;
+                                            * (GameManager.CurrentGame.ManaChargeMulipler / 15);
+
+                                            System.out.println(manaCost);
 
                                     SavedGame game = GameManager.CurrentGame;
                                     manaCost = ((ICharageableSpell) spell).getManaRequirment(game, heldTime);
 
                                     chargeBar.setValue(
-                                            (int) ((Math.max((int) ((ICharageableSpell) spell).getManaRequirment(game,
+                                            (int) ((Math.max(((ICharageableSpell) spell).getManaRequirment(game,
                                                     heldTime), 0.00000000001) / game.Mana) * 100));
 
                                 }

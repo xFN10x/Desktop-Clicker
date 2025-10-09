@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 import fn10.desktopClicker.game.SavedGame;
 
-public class ManaSpeedUpgrade implements IUpgrade {
+public class MaxManaUpgrade implements IUpgrade {
 
     @Override
     public ImageIcon getUpgradeImage() {
@@ -13,41 +13,38 @@ public class ManaSpeedUpgrade implements IUpgrade {
 
     @Override
     public String getUpgradeName() {
-        return "Mana Recharge Speed";
+        return "Max Mana";
     }
 
     @Override
     public String getUpgradeDescription() {
-        return "Increases the speed of which you get mana over time.";
+        return "Increases the amount of mana that you can store/use at one time";
     }
 
     @Override
     public int getLevel(SavedGame game) {
-        System.out.println(Math.max(game.ManaRecharge / 0.001f, 1));
-        
-        return Math.max(Math.round(game.ManaRecharge / 0.001f), 1);
+        return (int) Math.max(game.MaxMana / 5f, 1);
     }
 
     @Override
     public void setLevel(int level, SavedGame game) {
-        game.ManaRecharge = (float) (level * 0.001);
+        game.MaxMana = (float) (level * 5);
     }
 
     @Override
     public void Upgrade(SavedGame game) {
-        System.out.println(getLevel(game));
         setLevel((int) getLevel(game) + 1, game);
     }
 
     @Override
     public int getCoinRequirment(SavedGame game) {
-        return 50 + (50 * getLevel(game));
+        return 100 + (100 * getLevel(game));
     }
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (getLevel(game) >= 100) {
-            setLevel(100, game);;
+        if (getLevel(game) >= 60) {
+            setLevel(60, game);
             return true;
         }
         return false;
@@ -57,5 +54,4 @@ public class ManaSpeedUpgrade implements IUpgrade {
     public void setLevel(SavedGame game) {
         setLevel((int) getLevel(game), game);
     }
-
 }

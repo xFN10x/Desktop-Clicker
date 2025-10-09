@@ -4,7 +4,7 @@ import javax.swing.ImageIcon;
 
 import fn10.desktopClicker.game.SavedGame;
 
-public class ManaSpeedUpgrade implements IUpgrade {
+public class ManaChargeSpellUpgrade implements IUpgrade {
 
     @Override
     public ImageIcon getUpgradeImage() {
@@ -13,12 +13,12 @@ public class ManaSpeedUpgrade implements IUpgrade {
 
     @Override
     public String getUpgradeName() {
-        return "Mana Recharge Speed";
+        return "Spell Charging Speed";
     }
 
     @Override
     public String getUpgradeDescription() {
-        return "Increases the speed of which you get mana over time.";
+        return "Increases the speed that you charge spells with";
     }
 
     @Override
