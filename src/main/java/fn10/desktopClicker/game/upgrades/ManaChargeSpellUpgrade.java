@@ -23,31 +23,29 @@ public class ManaChargeSpellUpgrade implements IUpgrade {
 
     @Override
     public int getLevel(SavedGame game) {
-        System.out.println(Math.max(game.ManaRecharge / 0.001f, 1));
-        
-        return Math.max(Math.round(game.ManaRecharge / 0.001f), 1);
+        return game.ManaChargeMuliplerLevel;
     }
 
     @Override
     public void setLevel(int level, SavedGame game) {
-        game.ManaRecharge = (float) (level * 0.001);
+        game.ManaChargeMulipler = 1 + (0.5f * (level - 1));
+        game.ManaChargeMuliplerLevel = level;
     }
 
     @Override
     public void Upgrade(SavedGame game) {
-        System.out.println(getLevel(game));
         setLevel((int) getLevel(game) + 1, game);
     }
 
     @Override
     public int getCoinRequirment(SavedGame game) {
-        return 50 + (50 * getLevel(game));
+        return 50 + (125 * getLevel(game));
     }
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (getLevel(game) >= 100) {
-            setLevel(100, game);;
+        if (getLevel(game) >= 40) {
+            setLevel(40, game);;
             return true;
         }
         return false;

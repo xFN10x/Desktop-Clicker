@@ -3,8 +3,9 @@ package fn10.desktopClicker.game.spells;
 import javax.swing.ImageIcon;
 
 import fn10.desktopClicker.game.SavedGame;
+import fn10.desktopClicker.game.spells.interfaces.ICharageableSpell;
 
-public class SummonCoins implements ICharageableSpell {
+public class SummonCoinSpell implements ICharageableSpell {
 
     @Override
     public ImageIcon getSpellImage() {

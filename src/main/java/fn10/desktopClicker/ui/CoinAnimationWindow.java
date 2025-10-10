@@ -15,12 +15,12 @@ import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 
 public class CoinAnimationWindow extends TransparentWindow {
-    public static final ImageIcon COIN_ICON;
+    /*public static final ImageIcon COIN_ICON;
     static {
         COIN_ICON = new ImageIcon(CoinAnimationWindow.class.getResource("/coin2.gif"));
-    }
+    }*/
 
-    public final JLabel image = new JLabel(COIN_ICON);
+    public final JLabel image = new JLabel();
 
     public static void showCoin() {
         new CoinAnimationWindow(null).setVisible(true);

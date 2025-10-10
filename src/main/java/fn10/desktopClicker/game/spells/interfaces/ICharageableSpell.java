@@ -1,4 +1,4 @@
-package fn10.desktopClicker.game.spells;
+package fn10.desktopClicker.game.spells.interfaces;
 
 import fn10.desktopClicker.game.SavedGame;
 

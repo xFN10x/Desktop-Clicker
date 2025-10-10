@@ -5,6 +5,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -24,10 +25,10 @@ import javax.swing.SwingConstants;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
-import fn10.desktopClicker.game.spells.IBaseSpell;
-import fn10.desktopClicker.game.spells.ICharageableSpell;
-import fn10.desktopClicker.game.spells.ISpell;
-import fn10.desktopClicker.game.spells.SummonCoins;
+import fn10.desktopClicker.game.spells.SummonCoinSpell;
+import fn10.desktopClicker.game.spells.interfaces.IBaseSpell;
+import fn10.desktopClicker.game.spells.interfaces.ICharageableSpell;
+import fn10.desktopClicker.game.spells.interfaces.ISpell;
 import fn10.desktopClicker.util.ImageUtilites;
 
 public class SpellWindow extends JDialog {
@@ -40,7 +41,7 @@ public class SpellWindow extends JDialog {
     private final BoxLayout InnerLay = new BoxLayout(InnerScroll, BoxLayout.Y_AXIS);
 
     private final IBaseSpell[] spells = new IBaseSpell[] {
-            new SummonCoins()
+            new SummonCoinSpell()
     };
 
     public static void showSpells() {
@@ -137,14 +138,19 @@ public class SpellWindow extends JDialog {
                                     }
                                     if (!isPressing)
                                         return;
-                                    long heldTimeSeconds = (Instant.now().getEpochSecond()
-                                            - pressedTime.getEpochSecond());
-                                    long heldTimeNano = (Instant.now().getNano()
-                                            - pressedTime.getNano());
-                                    float heldTime = ((float) heldTimeSeconds + ((float) heldTimeNano / 1000000000))
+                                    /*
+                                     * long heldTimeSeconds = (Instant.now().getEpochSecond()
+                                     * - pressedTime.getEpochSecond());
+                                     * long heldTimeNano = (Instant.now().getNano()
+                                     * - pressedTime.getNano());
+                                     * float heldTime = ((float) heldTimeSeconds + ((float) heldTimeNano /
+                                     * 1000000000))
+                                     * (GameManager.CurrentGame.ManaChargeMulipler / 15);
+                                     */
+                                    float heldTime = (Duration.between(pressedTime, Instant.now()).toMillis() / 1000f)
                                             * (GameManager.CurrentGame.ManaChargeMulipler / 15);
 
-                                            System.out.println(manaCost);
+                                    System.out.println(manaCost);
 
                                     SavedGame game = GameManager.CurrentGame;
                                     manaCost = ((ICharageableSpell) spell).getManaRequirment(game, heldTime);

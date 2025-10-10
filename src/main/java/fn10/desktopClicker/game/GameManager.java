@@ -15,6 +15,7 @@ import fn10.desktopClicker.game.upgrades.CoinMiningUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.CoinsPerClickUpgrade;
 import fn10.desktopClicker.game.upgrades.IUpgrade;
+import fn10.desktopClicker.game.upgrades.ManaChargeSpellUpgrade;
 import fn10.desktopClicker.game.upgrades.ManaSpeedUpgrade;
 import fn10.desktopClicker.game.upgrades.MaxManaUpgrade;
 import fn10.desktopClicker.ui.CoinWindow;
@@ -37,6 +38,7 @@ public class GameManager {
 			new CoinAutoCollectUpgrade(),
 			new ManaSpeedUpgrade(),
 			new MaxManaUpgrade(),
+			new ManaChargeSpellUpgrade(),
 	};
 
 	private static long NextCoinSpawn = 0;
