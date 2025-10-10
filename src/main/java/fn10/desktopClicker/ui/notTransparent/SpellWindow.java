@@ -92,7 +92,7 @@ public class SpellWindow extends JDialog {
                                 + "</html>");
 
                 JButton button = new JButton((spell instanceof ICharageableSpell ? "Hold to Charge"
-                        : spell instanceof ISpell ? "Mana cost: " + ((ISpell) spell).getManaRequirment()
+                        : spell instanceof ISpell ? "Mana cost: " + ((ISpell) spell).getManaRequirment(GameManager.CurrentGame)
                                 : ""));
 
                 text.setForeground(Color.white);
