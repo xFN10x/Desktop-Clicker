@@ -3,7 +3,9 @@ package fn10.desktopClicker.game;
 import java.awt.Point;
 import java.awt.Window;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -28,6 +30,8 @@ public class GameManager {
 	public static SavedGame CurrentGame;
 	private static SavedGame LoadedGame;
 	private static Thread RunningThread = null;
+
+	public static List<CoinWindow> CurrentCoinWindows = new ArrayList<CoinWindow>();
 
 	public static boolean Paused = false;
 

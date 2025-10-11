@@ -27,6 +27,7 @@ public class Various {
             preloadAudio(Various.class.getResource("/cannotBuy.wav"));
             preloadAudio(Various.class.getResource("/coin.wav"));
             preloadAudio(Various.class.getResource("/upgrade.wav"));
+            preloadAudio(Various.class.getResource("/undertaleSound.wav"));
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -5,6 +5,7 @@ import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.Random;
@@ -66,6 +67,10 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     private CoinWindow(long lifetime) {
         super(new Dimension(100, 100), false);
 
+        GameManager.CurrentCoinWindows.add(this);
+
+        final Window This = this;
+
         onTick = new TimerTask() {
 
             public long beforeDespawn = lifetime;
@@ -94,8 +99,8 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
                     return;
                 }
                 if (fadeCounter <= 0) {
-                    setVisible(false);
                     dispose();
+                    GameManager.CurrentCoinWindows.remove(This);
                     cancel();
                     return;
                 }
@@ -122,12 +127,17 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     public void mouseClicked(MouseEvent e) {
     }
 
+    public void click() {
+        mousePressed(null);
+    }
+ 
     @Override
     public void mousePressed(MouseEvent e) {
         if (e == null || e.getButton() == MouseEvent.BUTTON1) {
             try {
                 onTick.cancel();
                 dispose();
+                GameManager.CurrentCoinWindows.remove(this);
                 GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick
                         * (GameManager.CurrentGame.CoinDoubleTimer > 0 ? 2 : 1);
                 GameManager.UpdateCoins(getLocation(), -1);
