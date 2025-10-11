@@ -60,16 +60,20 @@ public class GameManager {
 				}
 			}
 
+			if (CurrentGame.CoinDoubleTimer > 0) {
+				CurrentGame.CoinDoubleTimer--;
+			}
+
 			if (NextCoinSpawn <= 0) {
 				NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(
 						Math.max(CurrentGame.CoinMaxTime - 2000, 200),
 						Math.max(CurrentGame.CoinMaxTime, 500));
-				//System.out.println("Coin!");
+				// System.out.println("Coin!");
 				CoinWindow.spawnNew();
 			}
 			NextCoinSpawn--;
 			if (CurrentGame.Mana < CurrentGame.MaxMana) {
-				//System.out.println("mana: " + CurrentGame.Mana);
+				// System.out.println("mana: " + CurrentGame.Mana);
 				CurrentGame.Mana += CurrentGame.ManaRecharge;
 				if (CurrentGame.Mana >= CurrentGame.MaxMana) {
 					CurrentGame.Mana = CurrentGame.MaxMana;
@@ -92,9 +96,12 @@ public class GameManager {
 			CurrentGame.CurrentCoins = new HashMap<Point, Integer>();
 		}
 
-		if (life >= 0)
+		if (life > 0) {
+			if (CurrentGame.CurrentCoins.containsKey(location)) {
+				CurrentGame.CurrentCoins.remove(location);
+			}
 			CurrentGame.CurrentCoins.put(location, Long.valueOf(life).intValue());
-		else if (life < 0) {
+		} else if (life <= 0) {
 			{
 				System.out.println("Removed coin at " + location + "\n " + CurrentGame.CurrentCoins.remove(location));
 			}
@@ -140,12 +147,16 @@ public class GameManager {
 		}
 
 		if (CurrentGame.CurrentCoins != null)
-			for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {
-				Point key = entry.getKey();
-				System.out.println(
-						"Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
-				CoinWindow.spawnNew(key, entry.getValue());
+			if (CurrentGame.CurrentCoins.size() > 100) {
+				System.err.println("There are over 100 coins saved. Removing all.");
+				CurrentGame.CurrentCoins.clear();
 			}
+		for (Entry<Point, Integer> entry : CurrentGame.CurrentCoins.entrySet()) {
+			Point key = entry.getKey();
+			System.out.println(
+					"Loading coin at x=" + key.getX() + " y=" + key.getY() + " at life time: " + entry.getValue());
+			CoinWindow.spawnNew(key, entry.getValue());
+		}
 
 		Run();
 		Paused = false;

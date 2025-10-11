@@ -7,7 +7,6 @@ import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -129,7 +128,8 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
             try {
                 onTick.cancel();
                 dispose();
-                GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick;
+                GameManager.CurrentGame.Coins += GameManager.CurrentGame.CoinsPerClick
+                        * (GameManager.CurrentGame.CoinDoubleTimer > 0 ? 2 : 1);
                 GameManager.UpdateCoins(getLocation(), -1);
                 CoinAnimationWindow.showCoin(e == null ? getLocation() : null);
                 Various.playSound(getClass().getResource("/coin.wav"));

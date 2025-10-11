@@ -28,7 +28,7 @@ public class ManaChargeSpellUpgrade implements IUpgrade {
 
     @Override
     public void setLevel(int level, SavedGame game) {
-        game.ManaChargeMulipler = 1 + (0.5f * (level - 1));
+        game.ManaChargeMulipler = 1 + (0.05f * (level - 1));
         game.ManaChargeMuliplerLevel = level;
     }
 
@@ -39,7 +39,7 @@ public class ManaChargeSpellUpgrade implements IUpgrade {
 
     @Override
     public int getCoinRequirment(SavedGame game) {
-        return 50 + (125 * getLevel(game));
+        return 100 + (125 * getLevel(game));
     }
 
     @Override

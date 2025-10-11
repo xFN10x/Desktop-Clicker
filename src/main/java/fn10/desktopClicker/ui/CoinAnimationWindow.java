@@ -15,10 +15,13 @@ import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 
 public class CoinAnimationWindow extends TransparentWindow {
-    /*public static final ImageIcon COIN_ICON;
-    static {
-        COIN_ICON = new ImageIcon(CoinAnimationWindow.class.getResource("/coin2.gif"));
-    }*/
+    /*
+     * public static final ImageIcon COIN_ICON;
+     * static {
+     * COIN_ICON = new
+     * ImageIcon(CoinAnimationWindow.class.getResource("/coin2.gif"));
+     * }
+     */
 
     public final JLabel image = new JLabel();
 
@@ -57,6 +60,9 @@ public class CoinAnimationWindow extends TransparentWindow {
             private int offsetY = -32;
             private JLabel score = new JLabel("+" + GameManager.CurrentGame.CoinsPerClick);
             {
+                if (GameManager.CurrentGame.CoinDoubleTimer > 0) {
+                    score.setText("+" + (GameManager.CurrentGame.CoinsPerClick * 2) + " (x2)");
+                }
                 score.setForeground(Color.white);
                 score.setMinimumSize(new Dimension(100, 100));
             }

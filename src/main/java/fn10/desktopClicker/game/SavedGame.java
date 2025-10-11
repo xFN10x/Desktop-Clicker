@@ -30,6 +30,8 @@ public class SavedGame {
 
     public int CoinAutoCollectChance = 0;
 
+    public int CoinDoubleTimer = 0;
+
     /**
      * im to lazy to figure out the reverse conversion for it, so just store it here
      */

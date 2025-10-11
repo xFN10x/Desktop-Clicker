@@ -25,11 +25,14 @@ import javax.swing.SwingConstants;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
+import fn10.desktopClicker.game.spells.DoubleProfitSpell;
 import fn10.desktopClicker.game.spells.SummonCoinSpell;
 import fn10.desktopClicker.game.spells.interfaces.IBaseSpell;
 import fn10.desktopClicker.game.spells.interfaces.ICharageableSpell;
 import fn10.desktopClicker.game.spells.interfaces.ISpell;
+import fn10.desktopClicker.game.spells.interfaces.ISpellWithActiveText;
 import fn10.desktopClicker.util.ImageUtilites;
+import fn10.desktopClicker.util.Various;
 
 public class SpellWindow extends JDialog {
 
@@ -41,7 +44,8 @@ public class SpellWindow extends JDialog {
     private final BoxLayout InnerLay = new BoxLayout(InnerScroll, BoxLayout.Y_AXIS);
 
     private final IBaseSpell[] spells = new IBaseSpell[] {
-            new SummonCoinSpell()
+            new SummonCoinSpell(),
+            new DoubleProfitSpell(),
     };
 
     public static void showSpells() {
@@ -51,7 +55,7 @@ public class SpellWindow extends JDialog {
     private SpellWindow() {
         super(null, "Spells", ModalityType.APPLICATION_MODAL);
 
-        GameManager.Paused = true;
+        //GameManager.Paused = true; dont pause so things are better
 
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -92,7 +96,8 @@ public class SpellWindow extends JDialog {
                                 + "</html>");
 
                 JButton button = new JButton((spell instanceof ICharageableSpell ? "Hold to Charge"
-                        : spell instanceof ISpell ? "Mana cost: " + ((ISpell) spell).getManaRequirment(GameManager.CurrentGame)
+                        : spell instanceof ISpell
+                                ? "Mana cost: " + ((ISpell) spell).getManaRequirment(GameManager.CurrentGame)
                                 : ""));
 
                 text.setForeground(Color.white);
@@ -138,15 +143,7 @@ public class SpellWindow extends JDialog {
                                     }
                                     if (!isPressing)
                                         return;
-                                    /*
-                                     * long heldTimeSeconds = (Instant.now().getEpochSecond()
-                                     * - pressedTime.getEpochSecond());
-                                     * long heldTimeNano = (Instant.now().getNano()
-                                     * - pressedTime.getNano());
-                                     * float heldTime = ((float) heldTimeSeconds + ((float) heldTimeNano /
-                                     * 1000000000))
-                                     * (GameManager.CurrentGame.ManaChargeMulipler / 15);
-                                     */
+
                                     float heldTime = (Duration.between(pressedTime, Instant.now()).toMillis() / 1000f)
                                             * (GameManager.CurrentGame.ManaChargeMulipler / 15);
 
@@ -187,6 +184,39 @@ public class SpellWindow extends JDialog {
 
                     image.add(maxMana);
                     image.add(chargeBar);
+                } else if (spell instanceof ISpell) {
+                    button.addActionListener(ac -> {
+                        SavedGame game = GameManager.CurrentGame;
+                        if (((ISpell) spell).canCast(game) && ((ISpell) spell).getManaRequirment(game) <= game.Mana) {
+                            ((ISpell) spell).cast(game);
+                        } else {
+                            Various.playSound(getClass().getResource("/cannotBuy.wav"));
+                        }
+                    });
+                }
+
+                if (spell instanceof ISpellWithActiveText) {
+                    JLabel activeText = new JLabel(((ISpellWithActiveText)spell).getString());
+
+                    activeText.setForeground(Color.white);
+
+                    lay.putConstraint(SpringLayout.EAST, activeText, -10, SpringLayout.EAST, image);
+                    lay.putConstraint(SpringLayout.SOUTH, activeText, -5, SpringLayout.SOUTH, image);
+                    lay.putConstraint(SpringLayout.NORTH, activeText, 0, SpringLayout.NORTH, button);
+                    lay.putConstraint(SpringLayout.WEST, activeText, 5, SpringLayout.EAST, button);
+
+                    new Timer().scheduleAtFixedRate(new TimerTask() {
+
+                        @Override
+                        public void run() {
+                            if (!activeText.getText().equals(((ISpellWithActiveText)spell).getString())) {
+                                activeText.setText(((ISpellWithActiveText)spell).getString());
+                            }
+                        }
+                        
+                    }, 2, 1);
+
+                    image.add(activeText);
                 }
 
                 image.add(button);
