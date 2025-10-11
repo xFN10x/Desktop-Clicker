@@ -32,6 +32,10 @@ public class SavedGame {
 
     public int CoinDoubleTimer = 0;
 
+    public boolean BrokenLimits = false;
+
+    public int SummonMasterCooldown = 0;
+
     /**
      * im to lazy to figure out the reverse conversion for it, so just store it here
      */

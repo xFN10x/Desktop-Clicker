@@ -68,6 +68,10 @@ public class GameManager {
 				CurrentGame.CoinDoubleTimer--;
 			}
 
+			if (CurrentGame.SummonMasterCooldown > 0) {
+				CurrentGame.SummonMasterCooldown--;
+			}
+
 			if (NextCoinSpawn <= 0) {
 				NextCoinSpawn = Random.from(RandomGenerator.getDefault()).nextLong(
 						Math.max(CurrentGame.CoinMaxTime - 2000, 200),

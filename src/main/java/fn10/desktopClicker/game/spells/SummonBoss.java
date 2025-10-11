@@ -24,12 +24,13 @@ import com.formdev.flatlaf.ui.FlatLineBorder;
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.game.spells.interfaces.ISpell;
+import fn10.desktopClicker.game.spells.interfaces.ISpellWithActiveText;
 import fn10.desktopClicker.ui.GameMenu;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 import fn10.desktopClicker.util.ImageUtilites;
 import fn10.desktopClicker.util.Various;
 
-public class SummonBoss implements ISpell {
+public class SummonBoss implements ISpell, ISpellWithActiveText {
 
     @Override
     public ImageIcon getSpellImage() {
@@ -153,6 +154,7 @@ public class SummonBoss implements ISpell {
             });
 
             beginButton.addActionListener(ac -> {
+                GameManager.CurrentGame.SummonMasterCooldown = 3600000;
                 win.setAlwaysOnTop(false);
                 Window newWin = new TransparentWindow(new Dimension((int) size.getWidth(), (int) size.getHeight()),
                         true);
@@ -198,7 +200,92 @@ public class SummonBoss implements ISpell {
 
                                             wishButton.addActionListener(ac -> {
                                                 choices.removeAll();
-                                                
+                                                dialouge.setText("Alright, what does thou wish?");
+
+                                                JButton manyCoinsButton = new JButton("Many coins,");
+                                                JButton breakMyLimits = new JButton("Break my limits!");
+                                                JButton toOvertake = new JButton("To overtake you!");
+
+                                                toOvertake.addActionListener(act -> {
+                                                    choices.removeAll();
+                                                    JButton goback = new JButton("Go back");
+                                                    dialouge.setText(
+                                                            "I'm afraid I cannot do that yet. I have urgent matters, and I must leave");
+
+                                                    goback.addActionListener(acti -> {
+                                                        choices.removeAll();
+                                                        GameManager.Paused = false;
+                                                        GameMenu.CurrentMenu.setVisible(true);
+                                                        win.dispose();
+                                                        for (Window windows : Window.getWindows()) {
+                                                            if (windows.getBackground().equals(Color.BLUE)) {
+                                                                windows.setAlwaysOnTop(true);
+                                                            }
+                                                        }
+                                                    });
+
+                                                    choices.add(Box.createHorizontalGlue());
+                                                    choices.add(goback);
+                                                    choices.add(Box.createHorizontalGlue());
+                                                });
+
+                                                manyCoinsButton.addActionListener(act -> {
+                                                    choices.removeAll();
+                                                    JButton goback = new JButton("Go back");
+                                                    dialouge.setText(
+                                                            "As you wish. I have given you "
+                                                                    + (GameManager.CurrentGame.CoinsPerClick * 50)
+                                                                    + " coins.");
+                                                    GameManager.CurrentGame.CoinsPerClick *= 50;
+                                                    goback.addActionListener(acti -> {
+                                                        choices.removeAll();
+                                                        GameManager.Paused = false;
+                                                        GameMenu.CurrentMenu.setVisible(true);
+                                                        win.dispose();
+                                                        for (Window windows : Window.getWindows()) {
+                                                            if (windows.getBackground().equals(Color.BLUE)) {
+                                                                windows.setAlwaysOnTop(true);
+                                                            }
+                                                        }
+                                                    });
+
+                                                    choices.add(Box.createHorizontalGlue());
+                                                    choices.add(goback);
+                                                    choices.add(Box.createHorizontalGlue());
+                                                });
+
+                                                breakMyLimits.addActionListener(act -> {
+                                                    choices.removeAll();
+                                                    JButton goback = new JButton("Go back");
+                                                    dialouge.setText(
+                                                            "As you wish, now you can upgrade past normal.");
+
+                                                    GameManager.CurrentGame.BrokenLimits = true;
+
+                                                    goback.addActionListener(acti -> {
+                                                        choices.removeAll();
+                                                        GameManager.Paused = false;
+                                                        GameMenu.CurrentMenu.setVisible(true);
+                                                        win.dispose();
+                                                        for (Window windows : Window.getWindows()) {
+                                                            if (windows.getBackground().equals(Color.BLUE)) {
+                                                                windows.setAlwaysOnTop(true);
+                                                            }
+                                                        }
+                                                    });
+
+                                                    choices.add(Box.createHorizontalGlue());
+                                                    choices.add(goback);
+                                                    choices.add(Box.createHorizontalGlue());
+                                                });
+
+                                                choices.add(Box.createHorizontalGlue());
+                                                choices.add(manyCoinsButton);
+                                                choices.add(Box.createHorizontalStrut(10));
+                                                choices.add(breakMyLimits);
+                                                choices.add(Box.createHorizontalStrut(10));
+                                                choices.add(toOvertake);
+                                                choices.add(Box.createHorizontalGlue());
                                             });
 
                                             noReasonButton.addActionListener(ac -> {
@@ -260,6 +347,15 @@ public class SummonBoss implements ISpell {
 
     @Override
     public boolean canCast(SavedGame game) {
-        return true;
+        return game.SummonMasterCooldown <= 0;
+    }
+
+    @Override
+    public String getString() {
+        SavedGame game = GameManager.CurrentGame;
+        if (game.SummonMasterCooldown > 0) {
+            return "You can cast this again in " + (game.SummonMasterCooldown / 1000) + " seconds";
+        } else
+            return "";
     }
 }
