@@ -236,7 +236,7 @@ public class SummonBoss implements ISpell, ISpellWithActiveText {
                                                             "As you wish. I have given you "
                                                                     + (GameManager.CurrentGame.CoinsPerClick * 50)
                                                                     + " coins.");
-                                                    GameManager.CurrentGame.CoinsPerClick *= 50;
+                                                    GameManager.CurrentGame.Coins *= 50;
                                                     goback.addActionListener(acti -> {
                                                         choices.removeAll();
                                                         GameManager.Paused = false;

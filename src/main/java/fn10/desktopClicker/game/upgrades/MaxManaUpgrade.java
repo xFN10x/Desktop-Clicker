@@ -43,8 +43,8 @@ public class MaxManaUpgrade implements IUpgrade {
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (getLevel(game) >= 60) {
-            setLevel(60, game);
+        if (getLevel(game) >= 60 + (game.BrokenLimits ? 140 : 0)) {
+            setLevel(60 + (game.BrokenLimits ? 140 : 0), game);
             return true;
         }
         return false;

@@ -24,7 +24,7 @@ public class ManaSpeedUpgrade implements IUpgrade {
     @Override
     public int getLevel(SavedGame game) {
         System.out.println(Math.max(game.ManaRecharge / 0.0005f, 1));
-        
+
         return Math.max(Math.round(game.ManaRecharge / 0.0005f), 1);
     }
 
@@ -46,11 +46,21 @@ public class ManaSpeedUpgrade implements IUpgrade {
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (getLevel(game) >= 100) {
-            setLevel(100, game);;
-            return true;
+        if (game.BrokenLimits) {
+            if (getLevel(game) >= 600000) {
+                setLevel(600000, game);
+
+                return true;
+            }
+            return false;
+        } else {
+            if (getLevel(game) >= 100) {
+                setLevel(100, game);
+                ;
+                return true;
+            }
+            return false;
         }
-        return false;
     }
 
     @Override

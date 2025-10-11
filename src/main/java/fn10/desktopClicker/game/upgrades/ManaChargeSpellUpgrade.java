@@ -44,8 +44,8 @@ public class ManaChargeSpellUpgrade implements IUpgrade {
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (getLevel(game) >= 40) {
-            setLevel(40, game);;
+        if (getLevel(game) >= 40 + (game.BrokenLimits ? 20 : 0)) {
+            setLevel(40 + (game.BrokenLimits ? 20 : 0), game);;
             return true;
         }
         return false;

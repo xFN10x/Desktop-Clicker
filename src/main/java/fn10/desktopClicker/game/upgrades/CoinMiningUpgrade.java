@@ -48,11 +48,20 @@ public class CoinMiningUpgrade implements IUpgrade {
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (game.CoinMiningLevel >= 40) {
-            game.CoinMiningLevel = 40;
-            return true;
-        } else
-            return false;
+        if (game.BrokenLimits) {
+            if (game.CoinMiningLevel >= 41) {
+                game.CoinMiningLevel = 41;
+                return true;
+            } else
+                return false;
+        } else {
+            if (game.CoinMiningLevel >= 35) {
+                game.CoinMiningLevel = 35;
+                return true;
+            } else
+                return false;
+        }
+
     }
 
     @Override

@@ -28,7 +28,7 @@ public class CoinSpeedUpgrade implements IUpgrade {
 
     @Override
     public void setLevel(int level, SavedGame game) {
-        game.CoinMaxTime = 5000 - (100 * (level - 1));//get the max level by doing 5000/100
+        game.CoinMaxTime = 5000 - (100 * (level - 1));// get the max level by doing 5000/100
         game.CoinSpeedLevel = level;
     }
 
@@ -44,11 +44,11 @@ public class CoinSpeedUpgrade implements IUpgrade {
 
     @Override
     public boolean isMaxLevel(SavedGame game) {
-        if (game.CoinSpeedLevel >= 50) {
-            game.CoinSpeedLevel = 50;
+        if (game.CoinSpeedLevel >= 40 + (game.BrokenLimits ? 11 : 0)) {
+            game.CoinSpeedLevel = 40 + (game.BrokenLimits ? 11 : 0);
             return true;
         } else
-        return false;
+            return false;
     }
 
     @Override
