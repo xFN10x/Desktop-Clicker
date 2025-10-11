@@ -40,7 +40,7 @@ public class CoinAnimationWindow extends TransparentWindow {
     private CoinAnimationWindow(Point pos) {
         super(new Dimension(16, 64));
 
-        //add(image);
+        // add(image);
 
         final int y;
         final int x;
