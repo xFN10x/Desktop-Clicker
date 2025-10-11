@@ -1,5 +1,8 @@
 package fn10.desktopClicker.game.spells;
 
+import java.awt.Color;
+import java.awt.Window;
+
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
@@ -27,11 +30,23 @@ public class SummonBoss implements ISpell {
 
     @Override
     public void cast(SavedGame game) {
+        for (Window windows : Window.getWindows()) {
+            if (windows.isAlwaysOnTop()) {
+                windows.setBackground(Color.BLUE);
+            }
+            windows.setAlwaysOnTop(false);
+        }
         int option = JOptionPane.showConfirmDialog(null,
                 "Are you sure you want to do this? You should pause/finish anything that you are doing.", "Cast Spell?",
                 JOptionPane.YES_NO_OPTION);
         if (option == JOptionPane.YES_OPTION) {
             game.Mana -= getManaRequirment(game);
+        }
+
+        for (Window windows : Window.getWindows()) {
+            if (windows.getBackground().equals(Color.BLUE)) {
+                windows.setAlwaysOnTop(true);
+            }
         }
     }
 
