@@ -34,6 +34,7 @@ public class SaveManager {
     public MenuPosition pos = MenuPosition.DownLeft;
     public boolean sound = true;
     public boolean slower = false;
+    public boolean showCoins = false;
 
     public void removeGame(String Name) {
         List<SavedGame> building = new ArrayList<SavedGame>();

@@ -35,6 +35,8 @@ public class SettingsWindow extends JDialog {
     private final JComboBox<MenuPosition> UILocationSelector = new JComboBox<MenuPosition>(MenuPosition.values());
     private final JComboBox<Boolean> SoundSelector = new JComboBox<Boolean>(
             new Boolean[] { Boolean.TRUE, Boolean.FALSE });
+    private final JComboBox<Boolean> ShowCoinsSelector = new JComboBox<Boolean>(
+            new Boolean[] { Boolean.TRUE, Boolean.FALSE });
 
     private final JButton ApplyButton = new JButton("Apply");
     private final JButton ApplyCloseButton = new JButton("Apply & Close");
@@ -49,7 +51,7 @@ public class SettingsWindow extends JDialog {
         GameManager.Paused = true;
 
         setIconImage(new ImageIcon(getClass().getResource("/icon.png")).getImage());
-        
+
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 GameManager.Paused = false;
@@ -72,6 +74,7 @@ public class SettingsWindow extends JDialog {
 
                 save.pos = ((MenuPosition) UILocationSelector.getSelectedItem());
                 save.sound = ((Boolean) SoundSelector.getSelectedItem()).booleanValue();
+                save.showCoins = ((Boolean) ShowCoinsSelector.getSelectedItem()).booleanValue();
 
                 save.save();
 
@@ -80,7 +83,7 @@ public class SettingsWindow extends JDialog {
                 e.printStackTrace();
             }
         });
-        
+
         ApplyCloseButton.addActionListener(ac -> {
             ApplyButton.doClick();
             for (WindowListener windowListeners : getWindowListeners()) {
@@ -118,8 +121,12 @@ public class SettingsWindow extends JDialog {
         SoundSelector.setMaximumSize(new Dimension(500, SoundSelector.getHeight()));
         InnerScroll.add(SoundSelector);
 
+        InnerScroll.add(new JLabel("Show Coins"));
+        SoundSelector.setMaximumSize(new Dimension(500, ShowCoinsSelector.getHeight()));
+        InnerScroll.add(ShowCoinsSelector);
+
         SpringUtilities.makeGrid(InnerScroll,
-                2, 2, // rows, cols
+                3, 2, // rows are verticle
                 5, 5, // initialX, initialY
                 5, 5);// xPad, yPad
 

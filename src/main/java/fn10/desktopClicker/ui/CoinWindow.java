@@ -8,6 +8,7 @@ import java.awt.Rectangle;
 import java.awt.Window;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.io.IOException;
 import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -17,9 +18,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SpringLayout;
 
+import com.google.gson.JsonSyntaxException;
+
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
 import fn10.desktopClicker.util.ImageUtilites;
+import fn10.desktopClicker.util.SaveManager;
 import fn10.desktopClicker.util.Various;
 
 public class CoinWindow extends TransparentWindow implements MouseListener {
@@ -113,7 +117,12 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
         image.addMouseListener(this);
         image.setCursor(new Cursor(Cursor.HAND_CURSOR));
 
-        add(image);
+        try {
+            if (SaveManager.load().showCoins)
+                add(image);
+        } catch (JsonSyntaxException | IOException e) {
+            e.printStackTrace();
+        }
 
         lay.putConstraint(SpringLayout.HORIZONTAL_CENTER, image, 0, SpringLayout.HORIZONTAL_CENTER, getContentPane());
         lay.putConstraint(SpringLayout.VERTICAL_CENTER, image, 0, SpringLayout.VERTICAL_CENTER, getContentPane());
@@ -130,7 +139,7 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
     public void click() {
         mousePressed(null);
     }
- 
+
     @Override
     public void mousePressed(MouseEvent e) {
         if (e == null || e.getButton() == MouseEvent.BUTTON1) {
@@ -149,7 +158,12 @@ public class CoinWindow extends TransparentWindow implements MouseListener {
         } else if (e.getButton() == MouseEvent.BUTTON2) {
             JLabel labal = new JLabel(getLocation().toString());
             labal.setForeground(Color.white);
-            add(labal);
+            try {
+                if (SaveManager.load().showCoins)
+                    add(labal);
+            } catch (JsonSyntaxException | IOException e1) {
+                e1.printStackTrace();
+            }
 
             labal.setLocation(0, 0);
         }

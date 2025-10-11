@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.io.IOException;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -11,8 +12,11 @@ import java.util.TimerTask;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import com.google.gson.JsonSyntaxException;
+
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.ui.base.TransparentWindow;
+import fn10.desktopClicker.util.SaveManager;
 
 public class CoinAnimationWindow extends TransparentWindow {
     /*
@@ -36,7 +40,7 @@ public class CoinAnimationWindow extends TransparentWindow {
     private CoinAnimationWindow(Point pos) {
         super(new Dimension(16, 64));
 
-        add(image);
+        //add(image);
 
         final int y;
         final int x;
@@ -74,8 +78,12 @@ public class CoinAnimationWindow extends TransparentWindow {
                 if (beforeDespawn <= 600 && beforeDespawn > 0) {
                     if (image.isVisible())
                         image.setVisible(false);
-                    if (!List.of(getComponents()).contains(score))
-                        add(score);
+                    try {
+                        if (!List.of(getComponents()).contains(score) && SaveManager.load().showCoins)
+                            add(score);
+                    } catch (JsonSyntaxException | IOException e) {
+                        e.printStackTrace();
+                    }
                     if (offsetY != -64)
                         offsetY = -64;
                     if (!getSize().equals(new Dimension(100, 100))) {
