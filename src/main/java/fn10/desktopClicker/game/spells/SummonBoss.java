@@ -2,18 +2,24 @@ package fn10.desktopClicker.game.spells;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Image;
+import java.awt.Insets;
 import java.awt.Rectangle;
 import java.awt.Window;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.SpringLayout;
+import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+import com.formdev.flatlaf.ui.FlatLineBorder;
 
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
@@ -72,13 +78,36 @@ public class SummonBoss implements ISpell {
             JButton beginButton = new JButton("Continue...");
             JButton goBackButton = new JButton("Go back");
             JLabel img = new JLabel(new ImageIcon(getClass().getResource("/summoningCircle.png")));
+            JLabel dialouge = new JLabel("You lay down 6 coins in a star pattern...", SwingConstants.CENTER);
+
+            JPanel choices = new JPanel();
+            choices.setLayout(new BoxLayout(choices, BoxLayout.X_AXIS));
+            choices.setOpaque(false);
+            // choices.setBackground(new Color(0, 0, 0,0f));
+
+            choices.add(Box.createHorizontalGlue());
+            choices.add(beginButton);
+            choices.add(Box.createHorizontalStrut(10));
+            choices.add(goBackButton);
+            choices.add(Box.createHorizontalGlue());
+
             win.add(img);
+            win.add(dialouge);
+
+            dialouge.add(choices);
+
             win.setVisible(true);
             win.setAlwaysOnTop(true);
 
+            dialouge.setForeground(Color.white);
+            dialouge.setBackground(Color.darkGray);
+            dialouge.setBorder(new FlatLineBorder(new Insets(5, 5, 5, 5), Color.white, 5, 16));
+
             SpringLayout lay = new SpringLayout();
+            SpringLayout lay2 = new SpringLayout();
 
             win.setLayout(lay);
+            dialouge.setLayout(lay2);
 
             lay.putConstraint(SpringLayout.HORIZONTAL_CENTER, img, 0, SpringLayout.HORIZONTAL_CENTER,
                     win.getContentPane());
@@ -93,6 +122,24 @@ public class SummonBoss implements ISpell {
                     win.getContentPane());
             lay.putConstraint(SpringLayout.VERTICAL_CENTER, beginButton, -30, SpringLayout.VERTICAL_CENTER,
                     win.getContentPane());
+
+            lay.putConstraint(SpringLayout.SOUTH, dialouge, -30, SpringLayout.SOUTH,
+                    win.getContentPane());
+            lay.putConstraint(SpringLayout.EAST, dialouge, -30, SpringLayout.EAST,
+                    win.getContentPane());
+            lay.putConstraint(SpringLayout.WEST, dialouge, 30, SpringLayout.WEST,
+                    win.getContentPane());
+            lay.putConstraint(SpringLayout.NORTH, dialouge, 20, SpringLayout.SOUTH,
+                    img);
+
+            lay2.putConstraint(SpringLayout.SOUTH, choices, -10, SpringLayout.SOUTH,
+                    dialouge);
+            lay2.putConstraint(SpringLayout.EAST, choices, -10, SpringLayout.EAST,
+                    dialouge);
+            lay2.putConstraint(SpringLayout.WEST, choices, 10, SpringLayout.WEST,
+                    dialouge);
+            lay2.putConstraint(SpringLayout.NORTH, choices, 100, SpringLayout.NORTH,
+                    dialouge);
 
             goBackButton.addActionListener(ac -> {
                 GameManager.Paused = false;
@@ -110,50 +157,88 @@ public class SummonBoss implements ISpell {
                 Window newWin = new TransparentWindow(new Dimension((int) size.getWidth(), (int) size.getHeight()),
                         true);
 
-                win.remove(beginButton);
-                win.remove(goBackButton);
+                SwingUtilities.invokeLater(() -> {
+                    choices.removeAll();
+                    dialouge.setText("");
+                });
 
                 newWin.setAlwaysOnTop(true);
                 newWin.setVisible(true);
-
-                Various.playSound(getClass().getResource("/undertaleSound.wav"));
-                new Timer().scheduleAtFixedRate(new TimerTask() {
+                Timer timer = new Timer();
+                timer.scheduleAtFixedRate(new TimerTask() {
 
                     private float alpha = 0f;
                     private float alphaDown = 1f;
 
-                    private int holdCountDown = 20000;
+                    private int holdCountDown = 5000;
+
+                    private int omgCountdown = 5000;
+
+                    private ImageIcon coinMasterIcon = new ImageIcon(getClass().getResource("/coinMaster.png"));
 
                     @Override
                     public void run() {
-                        if (alpha >= 1) {
-                            holdCountDown--;
-                            if (holdCountDown <= 0) {
-                                if (alphaDown == 1f) {
-                                    img.setIcon(new ImageIcon(getClass().getResource("/coinMaster.png")));  
-                                }
+                        SwingUtilities.invokeLater(() -> {
+                            System.out.println(alpha);
+                            if (alpha >= 1) {
+                                holdCountDown--;
+                                if (holdCountDown <= 0) {
 
-                                newWin.setBackground(new Color(1f, 1f, 1f, alphaDown));
-                                alphaDown -= 0.00166666f;
+                                    if (alphaDown <= 0) {
+                                        if (omgCountdown > 0) {
+                                            omgCountdown--;
+                                        } else {
+                                            dialouge.setText("Why thou summon me?");
+                                            newWin.setAlwaysOnTop(false);
+                                            win.setAlwaysOnTop(true);
+                                            cancel();
 
-                                if (alphaDown <= 0) {
-                                    newWin.setAlwaysOnTop(false);
-                                    win.setAlwaysOnTop(true);
-                                    cancel();
-                                    return;
+                                            JButton wishButton = new JButton("I require your power");
+                                            JButton noReasonButton = new JButton("Err... no reason; bye!");
+
+                                            wishButton.addActionListener(ac -> {
+                                                choices.removeAll();
+                                                
+                                            });
+
+                                            noReasonButton.addActionListener(ac -> {
+                                                choices.removeAll();
+                                                GameManager.Paused = false;
+                                                GameMenu.CurrentMenu.setVisible(true);
+                                                win.dispose();
+                                                for (Window windows : Window.getWindows()) {
+                                                    if (windows.getBackground().equals(Color.BLUE)) {
+                                                        windows.setAlwaysOnTop(true);
+                                                    }
+                                                }
+                                            });
+
+                                            choices.add(Box.createHorizontalGlue());
+                                            choices.add(wishButton);
+                                            choices.add(Box.createHorizontalStrut(10));
+                                            choices.add(noReasonButton);
+                                            choices.add(Box.createHorizontalGlue());
+                                        }
+
+                                    } else {
+                                        if (!img.getIcon().equals(coinMasterIcon)) {
+                                            img.setIcon(coinMasterIcon);
+                                        }
+                                        newWin.setBackground(new Color(1f, 1f, 1f, alphaDown));
+                                        alphaDown -= 0.00166666f;
+                                    }
                                 }
+                            } else {
+
+                                newWin.setBackground(new Color(1f, 1f, 1f, alpha));
+                                alpha += 0.00166666f;
                             }
-                        } else {
-                            newWin.setBackground(new Color(1f, 1f, 1f, alpha));
-                            alpha += 0.00166666f;
-                        }
+                        });
                     }
 
                 }, 1, 1);
+                Various.playSound(getClass().getResource("/undertaleSound.wav"));
             });
-
-            win.add(beginButton);
-            win.add(goBackButton);
 
             win.setBackground(new Color(0, 0, 0, 0.2f));
 
