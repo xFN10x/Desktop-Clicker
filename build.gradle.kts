@@ -25,7 +25,7 @@ application {
     mainClass = "fn10.desktopClicker.Launcher"
 }
 
-val version = "1.0.1"
+val version = "1.1.0"
 
 tasks.shadowJar {
   archiveBaseName = "DesktopClicker"
