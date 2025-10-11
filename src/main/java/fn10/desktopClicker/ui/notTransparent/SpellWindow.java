@@ -26,6 +26,7 @@ import javax.swing.SwingConstants;
 import fn10.desktopClicker.game.GameManager;
 import fn10.desktopClicker.game.SavedGame;
 import fn10.desktopClicker.game.spells.DoubleProfitSpell;
+import fn10.desktopClicker.game.spells.SummonBoss;
 import fn10.desktopClicker.game.spells.SummonCoinSpell;
 import fn10.desktopClicker.game.spells.interfaces.IBaseSpell;
 import fn10.desktopClicker.game.spells.interfaces.ICharageableSpell;
@@ -46,6 +47,7 @@ public class SpellWindow extends JDialog {
     private final IBaseSpell[] spells = new IBaseSpell[] {
             new SummonCoinSpell(),
             new DoubleProfitSpell(),
+            new SummonBoss(),
     };
 
     public static void showSpells() {
