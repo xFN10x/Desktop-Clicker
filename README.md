@@ -8,6 +8,6 @@ You need to run the Jar file from the current releases. A Jar is a Java executab
 
 ### Running the Jar
 
-To run the jar, (crossplatform) you need to install [OpenJDK 21](https://github.com/xFN10x/Desktop-Clicker)
+To run the jar, (crossplatform) you need to install [OpenJDK 21]([https://github.com/xFN10x/Desktop-Clicker](https://learn.microsoft.com/en-ca/java/openjdk/download#openjdk-21))
 
 Once you install the version corrsponding to your platform, you should be able to run the Jar.
